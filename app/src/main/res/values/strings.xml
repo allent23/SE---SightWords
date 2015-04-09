@@ -1,0 +1,11 @@
+<resources>
+    <string name="app_name">SightWords</string>
+
+    <string name="hello_world">Hello world!</string>
+    <string name="action_settings">Settings</string>
+    <string name="titlename">Sight Words</string>
+    <string name="input_button">Input Words</string>
+    <string name="flash_button">Flash Cards</string>
+    <string name="writing_button">Writing Board</string>
+    <string name="quiz_button">Quiz</string>
+</resources>
