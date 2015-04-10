@@ -10,7 +10,9 @@ import android.view.View;
 import android.widget.Button;
 
 
-public class MainMenu extends ActionBarActivity {
+
+public class MainMenu extends ActionBarActivity
+{
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -18,8 +20,15 @@ public class MainMenu extends ActionBarActivity {
         setContentView(R.layout.activity_main_menu);
 
         Button flashcard = (Button) findViewById(R.id.flashcard_button);
+        Button writingboard = (Button) findViewById(R.id.writing_button);
+        Button quiz = (Button) findViewById(R.id.quiz_button);
+        Button inputwords = (Button) findViewById(R.id.input_button);
 
         flashcard.setOnClickListener(buttonListener);
+        writingboard.setOnClickListener(buttonListener);
+        quiz.setOnClickListener(buttonListener);
+        inputwords.setOnClickListener(buttonListener);
+
     }
 
 
@@ -45,17 +54,30 @@ public class MainMenu extends ActionBarActivity {
         return super.onOptionsItemSelected(item);
     }
 
-    private View.OnClickListener buttonListener = new View.OnClickListener() {
+    private View.OnClickListener buttonListener;
 
-        @Override
-        public void onClick(View v) {
-            Button activities = (Button) v;
+    {
 
-            Intent intent = new Intent(MainMenu.this, FlashCards.class);
-            startActivities(new Intent[]{intent});
+        buttonListener = new View.OnClickListener() {
+
+            @Override
+            public void onClick(View v)
+            {
+
+                Button activities = (Button) v;
+
+                if (activities.getText().equals("Flash Cards"))
+                {
+                    Intent flashcardpage = new Intent(MainMenu.this, FlashCards.class);
+                    startActivity(flashcardpage);
+                    //Dont forget to add new class intents into the android manifest bruh.
+                }
 
 
-        }
+            }
 
-    };
+        };
+    }
+
+
 }

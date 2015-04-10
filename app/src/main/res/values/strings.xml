@@ -8,4 +8,6 @@
     <string name="flash_button">Flash Cards</string>
     <string name="writing_button">Writing Board</string>
     <string name="quiz_button">Quiz</string>
+    <string name="flashcard_sightword">SIGHT WORD</string>
+    <string name="back">Back</string>
 </resources>
