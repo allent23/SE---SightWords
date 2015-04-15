@@ -10,4 +10,9 @@
     <string name="quiz_button">Quiz</string>
     <string name="flashcard_sightword">SIGHT WORD</string>
     <string name="back">Back</string>
+    <string name="next">Next</string>
+    <string name="question">Insert Question</string>
+    <string name="answer">Insert Options</string>
+    <string name="playbutton">play button</string>
+
 </resources>

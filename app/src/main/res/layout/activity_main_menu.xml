@@ -13,7 +13,8 @@
         android:weightSum="1"
         android:layout_alignParentBottom="true"
         android:layout_alignParentEnd="true"
-        android:layout_alignParentStart="false">
+        android:layout_alignParentStart="false"
+        android:id="@+id/linearLayout">
 
         <TableRow
             android:layout_width="match_parent"
@@ -100,13 +101,13 @@
         android:id="@+id/textView"
         android:textStyle="bold|italic"
         android:textSize="85dp"
-        android:layout_alignParentTop="true"
-        android:layout_alignParentStart="true"
         style="@style/Base.Theme.AppCompat.Light.DarkActionBar"
         android:background="#c81d1c19"
         android:textAllCaps="false"
         android:textAlignment="center"
         android:gravity="center"
         android:textColor="#ffffffff"
-        android:autoText="true" />
+        android:autoText="true"
+        android:layout_alignParentTop="true"
+        android:layout_alignParentStart="true" />
 </RelativeLayout>

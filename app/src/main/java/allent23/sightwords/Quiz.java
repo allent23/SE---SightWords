@@ -10,25 +10,18 @@ import android.view.View;
 import android.widget.Button;
 
 
-
-public class MainMenu extends ActionBarActivity
-{
+public class Quiz extends ActionBarActivity {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_main_menu);
+        setContentView(R.layout.quizlayout);
 
-        Button flashcard = (Button) findViewById(R.id.flashcard_button);
-        Button writingboard = (Button) findViewById(R.id.writing_button);
-        Button quiz = (Button) findViewById(R.id.quiz_button);
-        Button inputwords = (Button) findViewById(R.id.input_button);
+        Button back = (Button) findViewById(R.id.back);
+        Button next = (Button) findViewById(R.id.next);
 
-        flashcard.setOnClickListener(buttonListener);
-        writingboard.setOnClickListener(buttonListener);
-        quiz.setOnClickListener(buttonListener);
-        inputwords.setOnClickListener(buttonListener);
-
+        back.setOnClickListener(buttonListener);
+        next.setOnClickListener(buttonListener);
     }
 
 
@@ -57,32 +50,19 @@ public class MainMenu extends ActionBarActivity
     private View.OnClickListener buttonListener;
 
     {
-
         buttonListener = new View.OnClickListener() {
 
             @Override
-            public void onClick(View v)
-            {
+            public void onClick(View v) {
 
                 Button activities = (Button) v;
 
-                if (activities.getText().equals("Flash Cards"))
-                {
-                    Intent flashcardpage = new Intent(MainMenu.this, FlashCards.class);
-                    startActivity(flashcardpage);
-                    //Dont forget to add new class intents into the android manifest bruh.
-                }
-                if (activities.getText().equals("Quiz"))
-                {
-                    Intent quizpage = new Intent(MainMenu.this, Quiz.class);
-                    startActivity(quizpage);
-                    //Dont forget to add new class intents into the android manifest bruh.
-                }
+                Intent intent = new Intent(Quiz.this, MainMenu.class);
+                startActivities(new Intent[]{intent});
+
 
             }
 
         };
     }
-
-
 }
