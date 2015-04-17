@@ -8,6 +8,7 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
+import android.widget.RadioButton;
 
 
 public class Quiz extends ActionBarActivity {
@@ -19,11 +20,15 @@ public class Quiz extends ActionBarActivity {
 
         Button back = (Button) findViewById(R.id.back);
         Button next = (Button) findViewById(R.id.next);
+        RadioButton option1 = (RadioButton) findViewById(R.id.option1);
+        RadioButton option2 = (RadioButton) findViewById(R.id.option2);
+
 
         back.setOnClickListener(buttonListener);
         next.setOnClickListener(buttonListener);
+        option1.setOnClickListener(radioListener);
+        option2.setOnClickListener(radioListener);
     }
-
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
@@ -50,10 +55,12 @@ public class Quiz extends ActionBarActivity {
     private View.OnClickListener buttonListener;
 
     {
-        buttonListener = new View.OnClickListener() {
+        buttonListener = new View.OnClickListener()
+        {
 
             @Override
-            public void onClick(View v) {
+            public void onClick(View v)
+            {
 
                 Button activities = (Button) v;
 
@@ -62,7 +69,38 @@ public class Quiz extends ActionBarActivity {
 
 
             }
+        };
+    }
 
+    private View.OnClickListener radioListener;
+
+    {
+        radioListener = new View.OnClickListener()
+        {
+
+            @Override
+            public void onClick(View v)
+            {
+                boolean checked = ((RadioButton) v).isChecked();
+
+                RadioButton option1 = (RadioButton) findViewById(R.id.option1);
+                RadioButton option2 = (RadioButton) findViewById(R.id.option2);
+
+                // Check which radio button was clicked
+                switch(v.getId()) {
+                    case R.id.option1:
+                        if (checked)
+                            option1.setText("picked me #1!");
+                            option2.setChecked(false);
+                            break;
+                    case R.id.option2:
+                        if (checked)
+                            option2.setText("picked me #2!");
+                            option1.setChecked(false);
+                            break;
+                }
+
+            }
         };
     }
 }

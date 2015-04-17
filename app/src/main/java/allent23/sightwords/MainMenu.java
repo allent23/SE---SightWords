@@ -78,6 +78,12 @@ public class MainMenu extends ActionBarActivity
                     startActivity(quizpage);
                     //Dont forget to add new class intents into the android manifest bruh.
                 }
+                if (activities.getText().equals("Input Words"))
+                {
+                    Intent inputwordspage = new Intent(MainMenu.this, InputWords.class);
+                    startActivity(inputwordspage);
+                    //Dont forget to add new class intents into the android manifest bruh.
+                }
 
             }
 

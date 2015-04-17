@@ -15,4 +15,12 @@
     <string name="answer">Insert Options</string>
     <string name="playbutton">play button</string>
 
+    <!-- Antony's String Section -->
+    <string name="applywords">Apply</string> <!-- Apply words button for input text -->
+    <string name="add">Add Word</string> <!-- Add button for input text -->
+    <string name="delete">Delete</string> <!-- Delete button for input text -->
+    <string name="inputwords_title">Input Words</string> <!-- Input words title -->
+    <string name="inputwords_hint">Insert Word</string> <!-- Hint for Text Boxes -->
+
+
 </resources>
