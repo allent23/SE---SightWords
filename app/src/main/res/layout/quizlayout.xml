@@ -12,7 +12,7 @@
         android:layout_height="wrap_content"
         android:textAppearance="?android:attr/textAppearanceLarge"
         android:text="@string/question"
-        android:id="@+id/textView"
+        android:id="@+id/question"
         android:textStyle="bold|italic"
         android:textSize="60sp"
         style="@style/Base.Theme.AppCompat.Light.DarkActionBar"
@@ -21,8 +21,7 @@
         android:textAlignment="center"
         android:textColor="#ffffffff"
         android:gravity="center"
-        android:layout_below="@+id/back"
-        android:layout_alignEnd="@+id/progressBar2" />
+        android:layout_below="@+id/back" />
 
     <ProgressBar
         style="@style/Base.Widget.AppCompat.ProgressBar.Horizontal"
@@ -30,7 +29,7 @@
         android:layout_height="wrap_content"
         android:id="@+id/progressBar"
         android:layout_alignParentTop="true"
-        android:layout_alignEnd="@+id/textView"
+        android:layout_alignEnd="@+id/question"
         android:layout_alignParentEnd="true"
         android:progressBackgroundTint="@color/abc_primary_text_disable_only_material_dark" />
 
@@ -52,21 +51,11 @@
         android:layout_alignParentBottom="true"
         android:layout_alignParentEnd="true" />
 
-    <ProgressBar
-        style="?android:attr/progressBarStyleHorizontal"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:id="@+id/progressBar2"
-        android:layout_marginStart="130dp"
-        android:layout_alignTop="@+id/progressBar"
-        android:layout_alignBottom="@+id/progressBar"
-        android:layout_alignParentEnd="true" />
-
     <LinearLayout
         android:orientation="vertical"
         android:layout_width="fill_parent"
         android:layout_height="fill_parent"
-        android:layout_below="@+id/textView"
+        android:layout_below="@+id/question"
         android:layout_alignParentStart="true"
         android:layout_above="@+id/next"
         android:layout_alignParentEnd="true">
@@ -123,7 +112,7 @@
                     android:id="@+id/imageView3"
                     android:background="@android:drawable/ic_media_play"
                     android:contentDescription="@string/playbutton"
-                    android:layout_below="@+id/textView"
+                    android:layout_below="@+id/question"
                     android:layout_alignParentEnd="true"
                     android:layout_weight="1.71" />
 

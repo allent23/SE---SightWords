@@ -9,9 +9,24 @@ import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
 import android.widget.RadioButton;
+import android.widget.TextView;
 
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.List;
+
+import java.util.Arrays;
+import java.util.Random;
 
 public class Quiz extends ActionBarActivity {
+
+    String arr[] = {"sat", "dog", "cat", "hat", "mat", "can", "got", "the", "out", "fat"};
+    List<Integer> numbersAvail = new ArrayList<>();
+    int shuffled[] = new int[10];
+    Random rand = new Random();
+    StringBuilder builder = new StringBuilder();
+
+    int count = 0;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -22,12 +37,25 @@ public class Quiz extends ActionBarActivity {
         Button next = (Button) findViewById(R.id.next);
         RadioButton option1 = (RadioButton) findViewById(R.id.option1);
         RadioButton option2 = (RadioButton) findViewById(R.id.option2);
-
+        TextView question = (TextView) findViewById(R.id.question);
 
         back.setOnClickListener(buttonListener);
         next.setOnClickListener(buttonListener);
         option1.setOnClickListener(radioListener);
         option2.setOnClickListener(radioListener);
+
+        for(int i = 0; i < 9; i++) {
+            numbersAvail.add(i);
+        }
+
+        Collections.shuffle(numbersAvail);
+
+        for (int i = 0; i < numbersAvail.size(); i++) {
+            shuffled[i] = numbersAvail.get(i);
+        }
+
+        question.setText(arr[shuffled[count]]);
+        count++;
     }
 
     @Override
@@ -63,9 +91,71 @@ public class Quiz extends ActionBarActivity {
             {
 
                 Button activities = (Button) v;
+                TextView question = (TextView) findViewById(R.id.question);
+                RadioButton option1 = (RadioButton) findViewById(R.id.option1);
+                RadioButton option2 = (RadioButton) findViewById(R.id.option2);
 
-                Intent intent = new Intent(Quiz.this, MainMenu.class);
-                startActivities(new Intent[]{intent});
+                switch(v.getId()) {
+                    case R.id.next:
+
+                        if(count != 9)
+                        {
+                           String temp = arr[shuffled[count]];
+                           char random_letter = temp.charAt(rand.nextInt(temp.length()));
+                            String right_answer = Character.toString(random_letter);
+
+                            for (int i = 0; i < temp.length(); i++)
+                            {
+                                if(temp.charAt(i) == random_letter)
+                                {
+                                    builder.append("_");
+                                }
+                                else
+                                    builder.append(temp.charAt(i));
+                            }
+
+                            String modified_word = builder.toString();
+
+                            question.setText(modified_word);
+                            count++;
+                            builder.delete(0,temp.length());
+
+                            if(rand.nextInt(2) == 1)
+                            {
+                                option1.setText(right_answer);
+                                option2.setText("random letter");
+                            }
+                            else
+                            {
+                                option2.setText(right_answer);
+                                option1.setText("random letter");
+                            }
+
+                        }
+
+                        else
+                        {
+                            question.setText("All Done! Good Job!");
+                            Collections.shuffle(numbersAvail);
+
+                            for (int i = 0; i < numbersAvail.size(); i++) {
+                                shuffled[i] = numbersAvail.get(i);
+                            }
+
+                            count = 0;
+                        }
+
+                        option1.setChecked(false);
+                        option2.setChecked(false);
+
+                        break;
+
+                    case R.id.back:
+                        Intent intent = new Intent(Quiz.this, MainMenu.class);
+                        startActivities(new Intent[]{intent});
+                        break;
+                }
+
 
 
             }
@@ -82,7 +172,6 @@ public class Quiz extends ActionBarActivity {
             public void onClick(View v)
             {
                 boolean checked = ((RadioButton) v).isChecked();
-
                 RadioButton option1 = (RadioButton) findViewById(R.id.option1);
                 RadioButton option2 = (RadioButton) findViewById(R.id.option2);
 
