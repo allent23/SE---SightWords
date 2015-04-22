@@ -1,6 +1,5 @@
 package allent23.sightwords;
 
-        import android.content.DialogInterface;
         import android.content.Intent;
         import android.support.v7.app.ActionBarActivity;
         import android.os.Bundle;
@@ -17,7 +16,7 @@ public class FlashCards extends ActionBarActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.flashcards);
 
-        Button back = (Button) findViewById(R.id.back);
+        Button back = (Button) findViewById(R.id.home);
         Button next = (Button) findViewById(R.id.next);
 
         back.setOnClickListener(buttonListener);

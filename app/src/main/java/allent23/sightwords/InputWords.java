@@ -1,39 +1,72 @@
 package allent23.sightwords;
 
-import android.content.Intent;
 import android.os.Bundle;
 import android.support.v7.app.ActionBarActivity;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
+import android.widget.LinearLayout;
 
-/**
- * Created by antonytom on 4/12/15.
- */
+import android.text.Editable;
+import android.text.TextWatcher;
+import android.widget.EditText;
 
-/*Things to look at
-  - Is edit button necessary? should list be fully editable and only enable deleting?
-  - Test out scroll view
-  - Get emulator running
-  - figure how to save words locally
-*/
+import java.util.ArrayList;
+import java.util.List;
+
+
 public class InputWords extends ActionBarActivity {
+
+    List<String> list = new ArrayList<String>();
+    boolean yes = false;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.inputwords);
 
-        Button back = (Button) findViewById(R.id.back);
+        Button back = (Button) findViewById(R.id.home);
         Button apply = (Button) findViewById(R.id.applywords);
         Button delete = (Button) findViewById(R.id.delete);
         Button add = (Button) findViewById(R.id.edit);
+
+        EditText word_2 = (EditText) findViewById(R.id.editText2);
+        word_2.addTextChangedListener(textListener);
+
+        EditText word_3 = (EditText) findViewById(R.id.editText3);
+        word_3.addTextChangedListener(textListener);
+
+        EditText word_4 = (EditText) findViewById(R.id.editText4);
+        word_4.addTextChangedListener(textListener);
+
+        EditText word_5 = (EditText) findViewById(R.id.editText5);
+        word_5.addTextChangedListener(textListener);
+
+        EditText word_6 = (EditText) findViewById(R.id.editText6);
+        word_6.addTextChangedListener(textListener);
+
+        EditText word_7 = (EditText) findViewById(R.id.editText7);
+        word_7.addTextChangedListener(textListener);
+
+        EditText word_8 = (EditText) findViewById(R.id.editText8);
+        word_8.addTextChangedListener(textListener);
+
+        EditText word_9 = (EditText) findViewById(R.id.editText9);
+        word_9.addTextChangedListener(textListener);
+
+        EditText word_10 = (EditText) findViewById(R.id.editText10);
+        word_10.addTextChangedListener(textListener);
+
+        LinearLayout layout = (LinearLayout) findViewById(R.id.layout);
+
 
         back.setOnClickListener(buttonListener);
         apply.setOnClickListener(buttonListener);
         delete.setOnClickListener(buttonListener);
         add.setOnClickListener(buttonListener);
+
+
     }
 
 
@@ -67,14 +100,47 @@ public class InputWords extends ActionBarActivity {
             @Override
             public void onClick(View v) {
 
-                Button activities = (Button) v;
+                Button apply = (Button) findViewById(R.id.applywords);
+                Button delete = (Button) findViewById(R.id.delete);
+                Button edit = (Button) findViewById(R.id.edit); //ADD WORDS button
 
-                Intent intent = new Intent(InputWords.this, MainMenu.class);
-                startActivities(new Intent[]{intent});
+                // Check which button was clicked
+                switch (v.getId()) {
+                    case R.id.applywords:
 
+                        for(int i = 0; i < list.size();i++)
+                        {
+                            System.out.println(list.toArray()[i]);
+                        }
+                        break;
 
+                    case R.id.delete:
+                        break;
+
+                }
             }
 
+        };
+    }
+    private TextWatcher textListener;
+
+    {
+        textListener = new TextWatcher() {
+
+            public void afterTextChanged(Editable s)
+            {
+                String word = s.toString();
+                list.add(word);
+            }
+
+            public void beforeTextChanged(CharSequence s, int start,
+                                          int count, int after) {
+            }
+
+            public void onTextChanged(CharSequence s, int start, int before, int count)
+            {
+
+            }
         };
     }
 }

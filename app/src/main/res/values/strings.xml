@@ -11,7 +11,7 @@
     <string name="flashcard_sightword">SIGHT WORD</string>
     <string name="back">Back</string>
     <string name="next">Next</string>
-    <string name="question">Insert Question</string>
+    <string name="question">word</string>
     <string name="answer">Insert Options</string>
     <string name="playbutton">play button</string>
 
@@ -20,7 +20,12 @@
     <string name="add">Add Word</string> <!-- Add button for input text -->
     <string name="delete">Delete</string> <!-- Delete button for input text -->
     <string name="inputwords_title">Input Words</string> <!-- Input words title -->
-    <string name="inputwords_hint">Insert Word</string> <!-- Hint for Text Boxes -->
+    <string name="inputwords_hint">Insert Word</string>
+    <string name="ok">Yes, Please!</string>
+    <string name="cancel">No, Thank you!</string>
+    <string name="dialog_message">Play Again?</string>
+    <string name="dialog_title">Good Job! You Did It!</string>
+    <!-- Hint for Text Boxes -->
 
 
 </resources>
