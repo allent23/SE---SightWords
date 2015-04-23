@@ -1,4 +1,5 @@
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+
     xmlns:tools="http://schemas.android.com/tools" android:layout_width="wrap_content"
     android:layout_height="match_parent" android:paddingLeft="@dimen/activity_horizontal_margin"
     android:paddingRight="@dimen/activity_horizontal_margin"
@@ -6,7 +7,11 @@
     android:paddingBottom="@dimen/activity_vertical_margin" tools:context=".MainMenu"
     android:gravity="clip_horizontal"
     android:background="@drawable/classroom"
-    android:id="@+id/rel_layout">
+    android:id="@+id/rel_layout"
+    android:clickable="false"
+    style="style/Theme.Holo.NoActionBar.FullScreen">
+
+
 <!--    android:id="@+id/" -->
     android:textAlignment="center"
     android:background="@drawable/classroom">
@@ -49,7 +54,8 @@
         android:id="@+id/scrollView"
         android:layout_marginTop="100dp"
         android:layout_alignParentStart="false"
-        android:layout_alignEnd="@+id/edit">
+        android:layout_alignEnd="@+id/edit"
+        android:isScrollContainer="false" >
 
         <LinearLayout
             android:orientation="vertical"
@@ -59,10 +65,13 @@
 
             <TableRow
                 android:layout_width="match_parent"
-                android:layout_height="55dp">
+                android:layout_height="55dp"
+                android:layout_gravity="center"
+                android:layout_marginRight="20dp"
+                android:layout_marginLeft="20dp">
 
                 <EditText
-                    android:layout_width="313dp"
+                    android:layout_width="263dp"
                     android:layout_height="fill_parent"
                     android:id="@+id/editText2"
                     android:textIsSelectable="false"
@@ -73,7 +82,10 @@
                     android:gravity="center"
                     android:textSize="30sp"
                     android:autoText="false"
-                    android:inputType="text" />
+                    android:inputType="text"
+                    android:textColor="#ffffffff"
+                    android:singleLine="true"
+                    android:layout_gravity="left" />
 
                 <CheckBox
                     android:layout_width="fill_parent"
@@ -88,10 +100,13 @@
             <TableRow
                 android:layout_width="match_parent"
                 android:layout_height="55dp"
-                android:weightSum="1">
+                android:weightSum="1"
+                android:layout_gravity="center"
+                android:layout_marginRight="20dp"
+                android:layout_marginLeft="20dp">
 
                 <EditText
-                    android:layout_width="313dp"
+                    android:layout_width="263dp"
                     android:layout_height="fill_parent"
                     android:id="@+id/editText3"
                     android:textIsSelectable="false"
@@ -102,7 +117,8 @@
                     android:textColorHint="#ffffffff"
                     android:gravity="center"
                     android:textSize="30sp"
-                    android:inputType="text" />
+                    android:inputType="text"
+                    android:layout_gravity="left" />
 
                 <CheckBox
                     android:layout_width="fill_parent"
@@ -117,10 +133,13 @@
             <TableRow
                 android:layout_width="match_parent"
                 android:layout_height="55dp"
-                android:weightSum="1">
+                android:weightSum="1"
+                android:layout_gravity="center"
+                android:layout_marginRight="20dp"
+                android:layout_marginLeft="20dp">
 
                 <EditText
-                    android:layout_width="313dp"
+                    android:layout_width="263dp"
                     android:layout_height="fill_parent"
                     android:id="@+id/editText4"
                     android:background="#bc2e2e2e"
@@ -130,7 +149,8 @@
                     android:textColorHint="#ffffffff"
                     android:gravity="center"
                     android:textSize="30sp"
-                    android:inputType="text" />
+                    android:inputType="text"
+                    android:layout_gravity="left" />
 
                 <CheckBox
                     android:layout_width="fill_parent"
@@ -145,10 +165,13 @@
             <TableRow
                 android:layout_width="match_parent"
                 android:layout_height="55dp"
-                android:weightSum="1">
+                android:weightSum="1"
+                android:layout_gravity="center"
+                android:layout_marginRight="20dp"
+                android:layout_marginLeft="20dp">
 
                 <EditText
-                    android:layout_width="313dp"
+                    android:layout_width="263dp"
                     android:layout_height="fill_parent"
                     android:id="@+id/editText5"
                     android:background="#bc2e2e2e"
@@ -158,7 +181,8 @@
                     android:textColorHint="#ffffffff"
                     android:gravity="center"
                     android:textSize="30sp"
-                    android:inputType="text" />
+                    android:inputType="text"
+                    android:layout_gravity="left" />
 
                 <CheckBox
                     android:layout_width="fill_parent"
@@ -173,10 +197,13 @@
             <TableRow
                 android:layout_width="match_parent"
                 android:layout_height="55dp"
-                android:weightSum="1">
+                android:weightSum="1"
+                android:layout_gravity="center"
+                android:layout_marginRight="20dp"
+                android:layout_marginLeft="20dp">
 
                 <EditText
-                    android:layout_width="313dp"
+                    android:layout_width="263dp"
                     android:layout_height="fill_parent"
                     android:id="@+id/editText6"
                     android:background="#bc2e2e2e"
@@ -186,7 +213,8 @@
                     android:textColorHint="#ffffffff"
                     android:gravity="center"
                     android:textSize="30sp"
-                    android:inputType="text" />
+                    android:inputType="text"
+                    android:layout_gravity="left" />
 
                 <CheckBox
                     android:layout_width="fill_parent"
@@ -201,10 +229,13 @@
             <TableRow
                 android:layout_width="match_parent"
                 android:layout_height="55dp"
-                android:weightSum="1">
+                android:weightSum="1"
+                android:layout_gravity="center"
+                android:layout_marginRight="20dp"
+                android:layout_marginLeft="20dp">
 
                 <EditText
-                    android:layout_width="313dp"
+                    android:layout_width="263dp"
                     android:layout_height="fill_parent"
                     android:id="@+id/editText7"
                     android:background="#bc2e2e2e"
@@ -214,7 +245,8 @@
                     android:textColorHint="#ffffffff"
                     android:gravity="center"
                     android:textSize="30sp"
-                    android:inputType="text" />
+                    android:inputType="text"
+                    android:layout_gravity="left" />
 
                 <CheckBox
                     android:layout_width="fill_parent"
@@ -229,10 +261,13 @@
             <TableRow
                 android:layout_width="match_parent"
                 android:layout_height="55dp"
-                android:weightSum="1">
+                android:weightSum="1"
+                android:layout_gravity="center"
+                android:layout_marginRight="20dp"
+                android:layout_marginLeft="20dp">
 
                 <EditText
-                    android:layout_width="313dp"
+                    android:layout_width="263dp"
                     android:layout_height="fill_parent"
                     android:id="@+id/editText8"
                     android:background="#bc2e2e2e"
@@ -242,7 +277,8 @@
                     android:textColorHint="#ffffffff"
                     android:gravity="center"
                     android:textSize="30sp"
-                    android:inputType="text" />
+                    android:inputType="text"
+                    android:layout_gravity="left" />
 
                 <CheckBox
                     android:layout_width="fill_parent"
@@ -257,10 +293,13 @@
             <TableRow
                 android:layout_width="match_parent"
                 android:layout_height="55dp"
-                android:weightSum="1">
+                android:weightSum="1"
+                android:layout_gravity="center"
+                android:layout_marginRight="20dp"
+                android:layout_marginLeft="20dp">
 
                 <EditText
-                    android:layout_width="313dp"
+                    android:layout_width="263dp"
                     android:layout_height="fill_parent"
                     android:id="@+id/editText9"
                     android:background="#bc2e2e2e"
@@ -270,7 +309,8 @@
                     android:textColorHint="#ffffffff"
                     android:gravity="center"
                     android:textSize="30sp"
-                    android:inputType="text" />
+                    android:inputType="text"
+                    android:layout_gravity="left" />
 
                 <CheckBox
                     android:layout_width="fill_parent"
@@ -285,10 +325,13 @@
             <TableRow
                 android:layout_width="match_parent"
                 android:layout_height="55dp"
-                android:weightSum="1">
+                android:weightSum="1"
+                android:layout_gravity="center"
+                android:layout_marginRight="20dp"
+                android:layout_marginLeft="20dp">
 
                 <EditText
-                    android:layout_width="313dp"
+                    android:layout_width="263dp"
                     android:layout_height="fill_parent"
                     android:id="@+id/editText10"
                     android:background="#bc2e2e2e"
@@ -298,7 +341,8 @@
                     android:textColorHint="#ffffffff"
                     android:gravity="center"
                     android:textSize="30sp"
-                    android:inputType="text" />
+                    android:inputType="text"
+                    android:layout_gravity="left" />
 
                 <CheckBox
                     android:layout_width="fill_parent"

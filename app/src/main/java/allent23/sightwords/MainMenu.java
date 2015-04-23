@@ -9,10 +9,12 @@ import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
 
+import java.io.File;
 
 
 public class MainMenu extends ActionBarActivity
 {
+    boolean firsttime = true;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {

@@ -15,36 +15,64 @@ import android.view.View;
 import android.view.animation.Animation;
 import android.view.animation.AnimationUtils;
 import android.widget.Button;
+import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.RadioButton;
 import android.widget.TextView;
 
+import java.io.BufferedReader;
+import java.io.File;
+import java.io.FileInputStream;
+import java.io.FileNotFoundException;
+import java.io.FileOutputStream;
+import java.io.IOException;
+import java.io.InputStreamReader;
+import java.nio.Buffer;
+import java.nio.ByteBuffer;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 
 import java.util.Random;
 
+import static android.content.Context.*;
+
 public class Quiz extends ActionBarActivity {
 
-    String arr[] = {"sat", "dog", "cat", "hat", "mat", "can", "got", "the", "out", "fat"};
+    Context context = this;
+    AlertDialog.Builder alertDialogBuilder;
+
+    int arraySize;
+
     String alphabet = "abcdefghijklmnopqrstuvwxyz";
-    List<Integer> numbersAvail = new ArrayList<>();
-    int shuffled[] = new int[10];
+
     Random rand = new Random();
     StringBuilder builder = new StringBuilder();
+
     String right_answer;
     String wrong_answer;
+
+    String FILENAME = "SightWords";
+
+    String[] arr;
+    int[] shuffled;
+
+    List<Integer> numbersAvail = new ArrayList<>();
+    List<String> wordArr = new ArrayList<>();
+
+    String[] temp = new String[10];
+    String[] temp2 = new String[10];
 
     int count = 0;
 
     Animation question_spin, jump_forward, wrong_shake, button_shake;
 
-
     @Override
-    protected void onCreate(Bundle savedInstanceState) {
+    protected void onCreate(Bundle savedInstanceState)
+    {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.quizlayout);
+        alertDialogBuilder = new AlertDialog.Builder(context);
 
         Button home = (Button) findViewById(R.id.home);
         Button next = (Button) findViewById(R.id.next);
@@ -67,24 +95,74 @@ public class Quiz extends ActionBarActivity {
         next.startAnimation(button_shake);
         back.startAnimation(button_shake);
 
-        for(int i = 0; i < 9; i++) {
-            numbersAvail.add(i);
+        insertWords();
+        //arraySize = wordArr.size();
+
+        arr =  new String[arraySize];
+        shuffled = new int[arraySize];
+
+        int arrcounter = 0;
+
+        for (String x : wordArr)
+        {
+            arr[arrcounter] = x;
+            arrcounter++;
         }
 
-        Collections.shuffle(numbersAvail);
 
-        for (int i = 0; i < numbersAvail.size(); i++) {
-            shuffled[i] = numbersAvail.get(i);
+        if(arraySize == 0)
+        {
+            alertDialogBuilder.setTitle("Uh oh");
+
+            // set dialog message
+            alertDialogBuilder
+                    .setMessage("No words have been inputted :(")
+                    .setCancelable(false)
+                    .setNegativeButton("Return Home", new DialogInterface.OnClickListener() {
+                        public void onClick(DialogInterface dialog, int id) {
+
+                            Quiz.this.finish();
+                        }
+                    })
+                    .setPositiveButton("Go to Settings", new DialogInterface.OnClickListener() {
+                        public void onClick(DialogInterface dialog, int id) {
+                            // if this button is clicked, just close
+                            // the dialog box and do nothing
+
+                            Intent inputwords = new Intent(Quiz.this, InputWords.class);
+                            startActivity(inputwords);
+                            Quiz.this.finish();
+                        }
+                    });
+
+            // create alert dialog
+            AlertDialog alertDialog = alertDialogBuilder.create();
+
+            // show it
+            alertDialog.show();
         }
 
-        nextQuestion(question, option1, option2);
+        else {
 
+            for (int i = 0; i < arraySize ; i++)
+            {
+                numbersAvail.add(i);
+            }
 
+            Collections.shuffle(numbersAvail);
+
+            for (int i = 0; i < numbersAvail.size(); i++)
+            {
+                shuffled[i] = numbersAvail.get(i);
+            }
+
+            nextQuestion(question, option1, option2);
+        }
     }
 
     void nextQuestion(final TextView question, final RadioButton option1, final RadioButton option2)
     {
-
+        alertDialogBuilder = new AlertDialog.Builder(context);
         //store right and wrong in arrays for back button
         option1.setChecked(false);
         option2.setChecked(false);
@@ -93,19 +171,32 @@ public class Quiz extends ActionBarActivity {
         option2.setTextColor(Color.BLACK);
         final Context context = this;
 
-        if (count < 10)
+        System.out.println("Count: " + count + " --- ArraySize: " + arraySize);
+
+        if (count < (arraySize))
         {
             String temp = arr[shuffled[count]];
-            char random_letter = temp.charAt(rand.nextInt(temp.length()));
+
+            System.out.println(temp);
+
+            System.out.println(temp.length());
+
+            int random_char = rand.nextInt(temp.length());
+
+            char random_letter = temp.charAt(random_char);
             right_answer = Character.toString(random_letter);
 
             char wrong_letter = alphabet.charAt(rand.nextInt(alphabet.length()));
-            while (wrong_letter == random_letter) {
+
+            while (wrong_letter == random_letter)
+            {
                 wrong_letter = alphabet.charAt(rand.nextInt(alphabet.length()));
             }
+
             wrong_answer = Character.toString(wrong_letter);
 
-            for (int i = 0; i < temp.length(); i++) {
+            for (int i = 0; i < temp.length(); i++)
+            {
                 if (temp.charAt(i) == random_letter)
                     builder.append("_");
 
@@ -130,11 +221,8 @@ public class Quiz extends ActionBarActivity {
             count++;
         }
 
-        if(count >= 10) {
+        else {
 
-            AlertDialog.Builder alertDialogBuilder = new AlertDialog.Builder(context);
-
-            // set title
             alertDialogBuilder.setTitle("Good Job! You Did It!");
 
             // set dialog message
@@ -147,7 +235,7 @@ public class Quiz extends ActionBarActivity {
                             question.setText("All Done! Good Job!");
                             Collections.shuffle(numbersAvail);
 
-                            for (int i = 0; i < numbersAvail.size() - 1; i++)
+                            for (int i = 0; i < numbersAvail.size(); i++)
                                 shuffled[i] = numbersAvail.get(i);
 
                             option1.setText("");
@@ -164,6 +252,7 @@ public class Quiz extends ActionBarActivity {
                             // if this button is clicked, just close
                             // the dialog box and do nothing
                             Quiz.this.finish();
+
                         }
                     });
 
@@ -290,9 +379,10 @@ public class Quiz extends ActionBarActivity {
                             option2.setText("");
 
                             check_1 = false;
-                            check_2 = false;
+                            //check_2 = false;
 
-                            nextQuestion(question, option1, option2);
+
+                                nextQuestion(question, option1, option2);
                         }
 
                         if ( ( check_1 == true )&& (option1.getText() == wrong_answer))
@@ -322,10 +412,11 @@ public class Quiz extends ActionBarActivity {
                             option1.setText("");
                             option2.setText("");
 
-                            check_1 = false;
+                            //check_1 = false;
                             check_2 = false;
 
-                            nextQuestion(question, option1, option2);
+
+                                nextQuestion(question, option1, option2);
                         }
 
                         if (( check_2 == true )&& (option2.getText() == wrong_answer))
@@ -341,5 +432,83 @@ public class Quiz extends ActionBarActivity {
             }
         };
     }
+
+    public void insertWords()
+    {
+
+        FileInputStream in = null;
+        try
+        {
+            in = openFileInput(FILENAME);
+            InputStreamReader inputStreamReader = new InputStreamReader(in);
+            BufferedReader bufferedReader = new BufferedReader(inputStreamReader);
+            StringBuilder sb = new StringBuilder();
+            String line;
+
+            while ((line = bufferedReader.readLine()) != null)
+            {
+                sb.append(line);
+            }
+
+            String text = sb.toString();
+            temp = text.split(" ");
+
+            int blah = 0;
+            for (String x : temp)
+            {
+                wordArr.add(x);
+                blah++;
+            }
+            arraySize = blah ;
+            blah = 0;
+
+        }
+        catch (FileNotFoundException e)
+        {
+            alertDialogBuilder.setTitle("Uh oh");
+
+            // set dialog message
+            alertDialogBuilder
+                    .setMessage("No words have been inputted :(")
+                    .setCancelable(false)
+                    .setNegativeButton("Return Home", new DialogInterface.OnClickListener() {
+                        public void onClick(DialogInterface dialog, int id) {
+
+                            Quiz.this.finish();
+                        }
+                    })
+                    .setPositiveButton("Go to Settings", new DialogInterface.OnClickListener() {
+                        public void onClick(DialogInterface dialog, int id) {
+                            // if this button is clicked, just close
+                            // the dialog box and do nothing
+
+                            Intent inputwords = new Intent(Quiz.this, InputWords.class);
+                            startActivity(inputwords);
+                            Quiz.this.finish();
+                        }
+                    });
+
+            // create alert dialog
+            AlertDialog alertDialog = alertDialogBuilder.create();
+
+            // show it
+            alertDialog.show();
+
+        }
+        catch (IOException ioe) {
+            System.out.println("Exception while reading file " + ioe);
+        } finally {
+            // close the streams using close method
+            try {
+                if (in != null) {
+                    in.close();
+                }
+            } catch (IOException ioe) {
+                System.out.println("Error while closing stream: " + ioe);
+            }
+        }
+
+    }
+
 
 }
