@@ -1,9 +1,13 @@
 package allent23.sightwords;
+
 import android.app.AlertDialog;
 import android.content.Context;
 import android.content.DialogInterface;
+import android.content.Intent;
 import android.graphics.drawable.Drawable;
+import android.media.AudioManager;
 import android.os.Bundle;
+import android.speech.tts.Voice;
 import android.support.v7.app.ActionBarActivity;
 import android.view.KeyEvent;
 import android.view.Menu;
@@ -27,7 +31,20 @@ import java.io.IOException;
 import java.io.InputStreamReader;
 import java.util.ArrayList;
 import java.util.Collections;
+import java.util.HashMap;
 import java.util.List;
+
+import com.abbyy.mobile.lingvo.api.TranslationContract;
+
+import com.paragon.open.dictionary.api.Dictionary;
+import com.paragon.open.dictionary.api.OpenDictionaryAPI;
+
+import android.os.Bundle;
+import android.speech.tts.TextToSpeech;
+import android.widget.Toast;
+
+import java.util.Locale;
+
 
 public class InputWords extends ActionBarActivity {
 
@@ -39,10 +56,20 @@ public class InputWords extends ActionBarActivity {
     String[] temp = new String[10];
     String[] temp2 = new String[10];
 
+
+
+//    OpenDictionaryAPI api = new OpenDictionaryAPI(context);
+    //Dictionary dict = new Dictionary.TranslateAsTextListener();
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.inputwords);
+
+        //api.showTranslation("cheese");
+
+
+
 
         Button back = (Button) findViewById(R.id.home);
         Button apply = (Button) findViewById(R.id.applywords);
@@ -93,8 +120,11 @@ public class InputWords extends ActionBarActivity {
         delete.setOnClickListener(buttonListener);
         add.setOnClickListener(buttonListener);
 
-
     }
+
+
+
+
 
     @Override
     public boolean onKeyDown(int keyCode, KeyEvent event) {
@@ -198,6 +228,8 @@ public class InputWords extends ActionBarActivity {
                                         } catch (IOException e) {
                                             e.printStackTrace();
                                         }
+                                        Toast.makeText(getApplicationContext(), "All words have been added",
+                                                Toast.LENGTH_LONG).show();
                                     }
                                 })
                                 .setPositiveButton("No", new DialogInterface.OnClickListener() {
@@ -215,45 +247,8 @@ public class InputWords extends ActionBarActivity {
 
                     case R.id.delete:
 
-                        FileInputStream in = null;
 
-                        try {
-                            in = openFileInput(FILENAME);
-                            InputStreamReader inputStreamReader = new InputStreamReader(in);
-                            BufferedReader bufferedReader = new BufferedReader(inputStreamReader);
-                            StringBuilder sb = new StringBuilder();
-                            String line;
 
-                            while ((line = bufferedReader.readLine()) != null)
-                            {
-                                sb.append(line);
-                            }
-
-                            String temp = sb.toString();
-
-                            String[] text = temp.split(" ");
-
-                            for (String x : text)
-                            {
-                                if (!x.equals("") && x != null )
-                                    System.out.println("Word: " + x);
-                            }
-
-                        }
-                        catch (FileNotFoundException e) {
-                            System.out.println("File not found" + e);
-                        } catch (IOException ioe) {
-                            System.out.println("Exception while reading file " + ioe);
-                        } finally {
-                            // close the streams using close method
-                            try {
-                                if (in != null) {
-                                    in.close();
-                                }
-                            } catch (IOException ioe) {
-                                System.out.println("Error while closing stream: " + ioe);
-                            }
-                        }
                         break;
 
                 }

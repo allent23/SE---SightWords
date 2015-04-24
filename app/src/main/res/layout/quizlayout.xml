@@ -44,7 +44,7 @@
         android:id="@+id/next"
         android:background="@drawable/nextt"
         android:layout_alignParentBottom="true"
-        android:layout_alignEnd="@+id/question_play" />
+        android:layout_alignEnd="@+id/question" />
 
     <Button
         android:layout_width="wrap_content"
@@ -71,7 +71,8 @@
             <TableRow
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:background="#c3666666">
+                android:background="#c3666666"
+                android:weightSum="1">
 
                 <RadioButton
                     android:layout_width="275dp"
@@ -84,20 +85,19 @@
                     android:enabled="true"
                     android:elegantTextHeight="false" />
 
-                <ImageView
-                    android:layout_width="80dp"
-                    android:layout_height="match_parent"
-                    android:id="@+id/imageView2"
-                    android:contentDescription="@string/playbutton"
-                    android:layout_alignParentEnd="true"
-                    android:layout_weight="1.71"
-                    android:src="@android:drawable/ic_media_play" />
+                <Button
+                    android:layout_width="48dp"
+                    android:layout_height="67dp"
+                    android:id="@+id/option1_play"
+                    android:background="@android:drawable/ic_media_play"
+                    android:layout_weight="0.43" />
             </TableRow>
 
             <TableRow
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:background="#c3666666">
+                android:background="#c3666666"
+                android:weightSum="1">
 
                 <RadioButton
                     android:layout_width="275dp"
@@ -109,30 +109,25 @@
                     android:enabled="true"
                     android:clickable="true" />
 
-                <ImageView
-                    android:layout_width="80dp"
-                    android:layout_height="match_parent"
-                    android:id="@+id/imageView3"
-                    android:contentDescription="@string/playbutton"
-                    android:layout_below="@+id/question"
-                    android:layout_alignParentEnd="true"
-                    android:layout_weight="1.71"
-                    android:src="@android:drawable/ic_media_play" />
+                <Button
+                    android:layout_width="48dp"
+                    android:layout_height="67dp"
+                    android:id="@+id/option2_play"
+                    android:background="@android:drawable/ic_media_play"
+                    android:layout_weight="0.43" />
 
             </TableRow>
         </RadioGroup>
     </LinearLayout>
 
-    <ImageView
-        android:layout_width="80dp"
-        android:layout_height= "80dp"
-        android:id="@+id/question_play"
-        android:contentDescription="@string/playbutton"
-        android:adjustViewBounds="false"
-        android:src="@android:drawable/ic_media_play"
-        android:layout_above="@+id/linearLayout2"
-        android:layout_alignEnd="@+id/question"
-        android:layout_alignParentStart="false" />
+    <Button
+        android:layout_width="48dp"
+        android:layout_height="67dp"
+        android:id="@+id/question_playboi"
+        android:background="@android:drawable/ic_media_play"
+        android:layout_alignBottom="@+id/question"
+        android:layout_alignStart="@+id/next"
+        android:layout_alignEnd="@+id/question" />
 
 
 </RelativeLayout>
