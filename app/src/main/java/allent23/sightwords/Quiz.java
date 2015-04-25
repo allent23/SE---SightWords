@@ -1,5 +1,7 @@
 package allent23.sightwords;
 
+import android.animation.AnimatorSet;
+import android.animation.ObjectAnimator;
 import android.app.AlertDialog;
 import android.app.Dialog;
 import android.content.Context;
@@ -19,6 +21,7 @@ import android.view.animation.AnimationUtils;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.RadioButton;
 import android.widget.RelativeLayout;
 import android.widget.TableRow;
@@ -75,6 +78,7 @@ public class Quiz extends ActionBarActivity
 
     Animation question_spin, jump_forward, wrong_shake, button_shake, slide_in, slide_out;
 
+    LinearLayout lin_layout;
     Button option1_play, option2_play, question_play;
     TextToSpeech ttobj;
 
@@ -104,6 +108,7 @@ public class Quiz extends ActionBarActivity
         Button back = (Button) findViewById(R.id.back);
         RadioButton option1 = (RadioButton) findViewById(R.id.option1);
         RadioButton option2 = (RadioButton) findViewById(R.id.option2);
+        lin_layout = (LinearLayout) findViewById(R.id.lin_layout);
 
         option1_play = (Button) findViewById(R.id.option1_play);
         option2_play = (Button) findViewById(R.id.option2_play);
@@ -126,8 +131,8 @@ public class Quiz extends ActionBarActivity
         wrong_shake = AnimationUtils.loadAnimation(this, R.anim.shake);
         button_shake = AnimationUtils.loadAnimation(this, R.anim.buttonshake);
         jump_forward = AnimationUtils.loadAnimation(this, R.anim.jumper_forward);
-        slide_in = AnimationUtils.loadAnimation(this, R.anim.slideout);
-        slide_out = AnimationUtils.loadAnimation(this, R.anim.slidein);
+        slide_in = AnimationUtils.loadAnimation(this, R.anim.cardflip_left_in);
+        slide_out = AnimationUtils.loadAnimation(this, R.anim.cardflip_left_out);
 
         next.startAnimation(button_shake);
         back.startAnimation(button_shake);
@@ -264,7 +269,7 @@ public class Quiz extends ActionBarActivity
             // set dialog message
             alertDialogBuilder
                     .setMessage("Play Again?")
-                    .setCancelable(false)
+                    .setCancelable(false).setInverseBackgroundForced(true)
                     .setNegativeButton("Yes, Please!", new DialogInterface.OnClickListener() {
                         public void onClick(DialogInterface dialog, int id) {
 
@@ -338,9 +343,7 @@ public class Quiz extends ActionBarActivity
                 TextView question = (TextView) findViewById(R.id.question);
                 RadioButton option1 = (RadioButton) findViewById(R.id.option1);
                 RadioButton option2 = (RadioButton) findViewById(R.id.option2);
-                TableRow tb1 = (TableRow) findViewById(R.id.tb1);
-                TableRow tb2 = (TableRow) findViewById(R.id.tb2);
-                question_play = (Button) findViewById(R.id.question_playboi);
+
 
                 switch (v.getId()) {
                     case R.id.next:
@@ -355,14 +358,13 @@ public class Quiz extends ActionBarActivity
 
                             option1.setVisibility(View.VISIBLE);
                             option2.setVisibility(View.VISIBLE);
-                            tb1.setVisibility(View.VISIBLE);
-                            tb2.setVisibility(View.VISIBLE);
-
-                            tb1.startAnimation(slide_in);
-                            tb2.startAnimation(slide_in);
+                            lin_layout.setVisibility(View.VISIBLE);
 
                             question.setText("");
+                            lin_layout.setAnimation(slide_in);
                             question.startAnimation(slide_in);
+                            question.setText("");
+                            question_play.startAnimation(slide_in);
 
                             nextQuestion(question, option1, option2);
 
@@ -371,12 +373,11 @@ public class Quiz extends ActionBarActivity
                         {
                             question.setText("");
                             question.startAnimation(slide_in);
+                            question.setText("");
                             question.setText(question_arr[count]);
-                            tb1.setVisibility(View.INVISIBLE);
-                            tb2.setVisibility(View.INVISIBLE);
+                            lin_layout.setVisibility(View.INVISIBLE);
 
                             count++;
-
                         }
 
                         break;
@@ -385,23 +386,22 @@ public class Quiz extends ActionBarActivity
 
                         if (count > 1)
                         {
-                            question.startAnimation(slide_out);
-
                             count--;
 
                             if(backcount < count )
                                 backcount = count;
 
+                            lin_layout.setVisibility(View.INVISIBLE);
 
                             question.setText("");
-                            //question.startAnimation(question_spin);
+                            question.startAnimation(slide_out);
+                            question_play.startAnimation(slide_out);
 
                             option1.setChecked(false);
                             option2.setChecked(false);
 
                             question.setText(question_arr[count-1]);
-                            tb1.setVisibility(View.INVISIBLE);
-                            tb2.setVisibility(View.INVISIBLE);
+
                         }
 
                         break;
@@ -437,7 +437,6 @@ public class Quiz extends ActionBarActivity
                 RadioButton option1 = (RadioButton) findViewById(R.id.option1);
                 RadioButton option2 = (RadioButton) findViewById(R.id.option2);
                 TextView question = (TextView) findViewById(R.id.question);
-                Button questionplay = (Button) findViewById(R.id.question_playboi);
 
                 boolean check_1, check_2;
 
@@ -451,11 +450,13 @@ public class Quiz extends ActionBarActivity
                         check_1 = option1.isChecked();
 
                         if ((check_1 == true) && (option1.getText() == right_answer)) {
-                            question.startAnimation(question_spin);
-                            questionplay.startAnimation(question_spin);
 
                             option1.setText("");
                             option2.setText("");
+
+                            question.startAnimation(slide_in);
+                            question_play.startAnimation(slide_in);
+                            lin_layout.startAnimation(slide_in);
 
                             check_1 = false;
 
@@ -469,7 +470,6 @@ public class Quiz extends ActionBarActivity
                         }
 
 
-
                         break;
 
                     case R.id.option2:
@@ -480,14 +480,16 @@ public class Quiz extends ActionBarActivity
                         check_2 = option2.isChecked();
 
                         if ((check_2 == true) && (option2.getText() == right_answer)) {
-                            question.startAnimation(question_spin);
-                            questionplay.startAnimation(question_spin);
 
                             option1.setChecked(false);
                             option2.setChecked(false);
 
                             option1.setText("");
                             option2.setText("");
+
+                            question.startAnimation(slide_in);
+                            question_play.startAnimation(slide_in);
+                            lin_layout.startAnimation(slide_in);
 
                             check_2 = false;
 

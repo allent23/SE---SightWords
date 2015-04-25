@@ -350,6 +350,7 @@ public class InputWords extends ActionBarActivity {
                         return src;
                     }
                     return "";
+
                 }
             };
             x.setFilters(filters);
