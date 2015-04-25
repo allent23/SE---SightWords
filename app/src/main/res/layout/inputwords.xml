@@ -36,7 +36,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="@string/add"
-        android:id="@+id/edit"
+        android:id="@+id/add"
         android:layout_alignParentTop="true"
         android:layout_alignParentEnd="true" />
 
@@ -44,315 +44,27 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:id="@+id/home"
-        android:layout_alignBottom="@+id/edit"
+        android:layout_alignBottom="@+id/add"
         android:layout_alignParentStart="true"
         android:background="@drawable/back" />
 
     <ScrollView
-        android:layout_width="wrap_content"
+        android:layout_width="fill_parent"
         android:layout_height="280dp"
         android:id="@+id/scrollView"
-        android:layout_marginTop="100dp"
-        android:layout_alignParentStart="false"
-        android:layout_alignEnd="@+id/edit"
-        android:isScrollContainer="false" >
+        android:isScrollContainer="false"
+        android:layout_centerVertical="true"
+        android:layout_centerHorizontal="true">
 
         <LinearLayout
             android:orientation="vertical"
             android:layout_width="fill_parent"
             android:layout_height="wrap_content"
-            android:id="@+id/layout">
+            android:id="@+id/layout"
+            android:divider="@android:drawable/button_onoff_indicator_off"
+            android:showDividers="middle|end"
+            android:baselineAligned="false">
 
-            <TableRow
-                android:layout_width="match_parent"
-                android:layout_height="55dp"
-                android:layout_gravity="center"
-                android:layout_marginRight="20dp"
-                android:layout_marginLeft="20dp">
-
-                <EditText
-                    android:layout_width="263dp"
-                    android:layout_height="fill_parent"
-                    android:id="@+id/editText2"
-                    android:textIsSelectable="false"
-                    android:background="#bc2e2e2e"
-                    android:hint="@string/inputwords_hint"
-                    android:textColorHint="#ffffffff"
-                    android:textStyle="bold|normal|italic"
-                    android:gravity="center"
-                    android:textSize="30sp"
-                    android:autoText="false"
-                    android:inputType="text"
-                    android:textColor="#ffffffff"
-                    android:singleLine="true"
-                    android:layout_gravity="left" />
-
-                <CheckBox
-                    android:layout_width="fill_parent"
-                    android:layout_height="fill_parent"
-                    android:id="@+id/checkBox"
-                    android:gravity="center"
-                    android:checked="false"
-                    android:background="#ad9befff"
-                    android:clickable="true" />
-            </TableRow>
-
-            <TableRow
-                android:layout_width="match_parent"
-                android:layout_height="55dp"
-                android:weightSum="1"
-                android:layout_gravity="center"
-                android:layout_marginRight="20dp"
-                android:layout_marginLeft="20dp">
-
-                <EditText
-                    android:layout_width="263dp"
-                    android:layout_height="fill_parent"
-                    android:id="@+id/editText3"
-                    android:textIsSelectable="false"
-                    android:background="#bc2e2e2e"
-                    android:hint="@string/inputwords_hint"
-                    android:textStyle="bold|normal|italic"
-                    android:textColor="#ffffffff"
-                    android:textColorHint="#ffffffff"
-                    android:gravity="center"
-                    android:textSize="30sp"
-                    android:inputType="text"
-                    android:layout_gravity="left" />
-
-                <CheckBox
-                    android:layout_width="fill_parent"
-                    android:layout_height="fill_parent"
-                    android:id="@+id/checkBox2"
-                    android:gravity="center"
-                    android:checked="false"
-                    android:background="#ad9befff"
-                    android:clickable="true" />
-            </TableRow>
-
-            <TableRow
-                android:layout_width="match_parent"
-                android:layout_height="55dp"
-                android:weightSum="1"
-                android:layout_gravity="center"
-                android:layout_marginRight="20dp"
-                android:layout_marginLeft="20dp">
-
-                <EditText
-                    android:layout_width="263dp"
-                    android:layout_height="fill_parent"
-                    android:id="@+id/editText4"
-                    android:background="#bc2e2e2e"
-                    android:hint="@string/inputwords_hint"
-                    android:textStyle="bold|normal|italic"
-                    android:textColor="#ffffffff"
-                    android:textColorHint="#ffffffff"
-                    android:gravity="center"
-                    android:textSize="30sp"
-                    android:inputType="text"
-                    android:layout_gravity="left" />
-
-                <CheckBox
-                    android:layout_width="fill_parent"
-                    android:layout_height="fill_parent"
-                    android:id="@+id/checkBox3"
-                    android:gravity="center"
-                    android:checked="false"
-                    android:background="#ad9befff"
-                    android:clickable="true" />
-            </TableRow>
-
-            <TableRow
-                android:layout_width="match_parent"
-                android:layout_height="55dp"
-                android:weightSum="1"
-                android:layout_gravity="center"
-                android:layout_marginRight="20dp"
-                android:layout_marginLeft="20dp">
-
-                <EditText
-                    android:layout_width="263dp"
-                    android:layout_height="fill_parent"
-                    android:id="@+id/editText5"
-                    android:background="#bc2e2e2e"
-                    android:hint="@string/inputwords_hint"
-                    android:textStyle="bold|normal|italic"
-                    android:textColor="#ffffffff"
-                    android:textColorHint="#ffffffff"
-                    android:gravity="center"
-                    android:textSize="30sp"
-                    android:inputType="text"
-                    android:layout_gravity="left" />
-
-                <CheckBox
-                    android:layout_width="fill_parent"
-                    android:layout_height="fill_parent"
-                    android:id="@+id/checkBox4"
-                    android:gravity="center"
-                    android:checked="false"
-                    android:background="#ad9befff"
-                    android:clickable="true" />
-            </TableRow>
-
-            <TableRow
-                android:layout_width="match_parent"
-                android:layout_height="55dp"
-                android:weightSum="1"
-                android:layout_gravity="center"
-                android:layout_marginRight="20dp"
-                android:layout_marginLeft="20dp">
-
-                <EditText
-                    android:layout_width="263dp"
-                    android:layout_height="fill_parent"
-                    android:id="@+id/editText6"
-                    android:background="#bc2e2e2e"
-                    android:hint="@string/inputwords_hint"
-                    android:textStyle="bold|normal|italic"
-                    android:textColor="#ffffffff"
-                    android:textColorHint="#ffffffff"
-                    android:gravity="center"
-                    android:textSize="30sp"
-                    android:inputType="text"
-                    android:layout_gravity="left" />
-
-                <CheckBox
-                    android:layout_width="fill_parent"
-                    android:layout_height="fill_parent"
-                    android:id="@+id/checkBox5"
-                    android:gravity="center"
-                    android:checked="false"
-                    android:background="#ad9befff"
-                    android:clickable="true" />
-            </TableRow>
-
-            <TableRow
-                android:layout_width="match_parent"
-                android:layout_height="55dp"
-                android:weightSum="1"
-                android:layout_gravity="center"
-                android:layout_marginRight="20dp"
-                android:layout_marginLeft="20dp">
-
-                <EditText
-                    android:layout_width="263dp"
-                    android:layout_height="fill_parent"
-                    android:id="@+id/editText7"
-                    android:background="#bc2e2e2e"
-                    android:hint="@string/inputwords_hint"
-                    android:textStyle="bold|normal|italic"
-                    android:textColor="#ffffffff"
-                    android:textColorHint="#ffffffff"
-                    android:gravity="center"
-                    android:textSize="30sp"
-                    android:inputType="text"
-                    android:layout_gravity="left" />
-
-                <CheckBox
-                    android:layout_width="fill_parent"
-                    android:layout_height="fill_parent"
-                    android:id="@+id/checkBox6"
-                    android:gravity="center"
-                    android:checked="false"
-                    android:background="#ad9befff"
-                    android:clickable="true" />
-            </TableRow>
-
-            <TableRow
-                android:layout_width="match_parent"
-                android:layout_height="55dp"
-                android:weightSum="1"
-                android:layout_gravity="center"
-                android:layout_marginRight="20dp"
-                android:layout_marginLeft="20dp">
-
-                <EditText
-                    android:layout_width="263dp"
-                    android:layout_height="fill_parent"
-                    android:id="@+id/editText8"
-                    android:background="#bc2e2e2e"
-                    android:hint="@string/inputwords_hint"
-                    android:textStyle="bold|normal|italic"
-                    android:textColor="#ffffffff"
-                    android:textColorHint="#ffffffff"
-                    android:gravity="center"
-                    android:textSize="30sp"
-                    android:inputType="text"
-                    android:layout_gravity="left" />
-
-                <CheckBox
-                    android:layout_width="fill_parent"
-                    android:layout_height="fill_parent"
-                    android:id="@+id/checkBox7"
-                    android:gravity="center"
-                    android:checked="false"
-                    android:background="#ad9befff"
-                    android:clickable="true" />
-            </TableRow>
-
-            <TableRow
-                android:layout_width="match_parent"
-                android:layout_height="55dp"
-                android:weightSum="1"
-                android:layout_gravity="center"
-                android:layout_marginRight="20dp"
-                android:layout_marginLeft="20dp">
-
-                <EditText
-                    android:layout_width="263dp"
-                    android:layout_height="fill_parent"
-                    android:id="@+id/editText9"
-                    android:background="#bc2e2e2e"
-                    android:hint="@string/inputwords_hint"
-                    android:textStyle="bold|normal|italic"
-                    android:textColor="#ffffffff"
-                    android:textColorHint="#ffffffff"
-                    android:gravity="center"
-                    android:textSize="30sp"
-                    android:inputType="text"
-                    android:layout_gravity="left" />
-
-                <CheckBox
-                    android:layout_width="fill_parent"
-                    android:layout_height="fill_parent"
-                    android:id="@+id/checkBox8"
-                    android:gravity="center"
-                    android:checked="false"
-                    android:background="#ad9befff"
-                    android:clickable="true" />
-            </TableRow>
-
-            <TableRow
-                android:layout_width="match_parent"
-                android:layout_height="55dp"
-                android:weightSum="1"
-                android:layout_gravity="center"
-                android:layout_marginRight="20dp"
-                android:layout_marginLeft="20dp">
-
-                <EditText
-                    android:layout_width="263dp"
-                    android:layout_height="fill_parent"
-                    android:id="@+id/editText10"
-                    android:background="#bc2e2e2e"
-                    android:hint="@string/inputwords_hint"
-                    android:textStyle="bold|normal|italic"
-                    android:textColor="#ffffffff"
-                    android:textColorHint="#ffffffff"
-                    android:gravity="center"
-                    android:textSize="30sp"
-                    android:inputType="text"
-                    android:layout_gravity="left" />
-
-                <CheckBox
-                    android:layout_width="fill_parent"
-                    android:layout_height="fill_parent"
-                    android:id="@+id/checkBox9"
-                    android:checked="false"
-                    android:clickable="true"
-                    android:gravity="center"
-                    android:background="#ad9befff" />
-            </TableRow>
         </LinearLayout>
     </ScrollView>
 
@@ -364,7 +76,7 @@
         android:textSize="30sp"
         android:textStyle="bold|italic"
         android:textColorHighlight="#ffffffff"
-        android:layout_below="@+id/edit"
+        android:layout_below="@+id/add"
         android:layout_centerHorizontal="true"
         android:textColor="#ff010101"
         android:backgroundTint="#7ca0a0a0" />

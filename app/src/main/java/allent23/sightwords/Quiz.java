@@ -20,6 +20,8 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.RadioButton;
+import android.widget.RelativeLayout;
+import android.widget.TableRow;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -47,7 +49,7 @@ public class Quiz extends ActionBarActivity
     Context context = this;
     AlertDialog.Builder alertDialogBuilder;
 
-    int arraySize;
+    int arraySize = 0;
 
     String alphabet = "abcdefghijklmnopqrstuvwxyz";
 
@@ -65,15 +67,18 @@ public class Quiz extends ActionBarActivity
     List<Integer> numbersAvail = new ArrayList<>();
     List<String> wordArr = new ArrayList<>();
 
-    String[] temp = new String[10];
-    String[] temp2 = new String[10];
+    String[] temp = new String[arraySize];
+    String[] option1_arr, option2_arr, question_arr, right_arr, wrong_arr;
 
     int count = 0;
+    int backcount = 0;
 
-    Animation question_spin, jump_forward, wrong_shake, button_shake;
+    Animation question_spin, jump_forward, wrong_shake, button_shake, slide_in, slide_out;
 
     Button option1_play, option2_play, question_play;
     TextToSpeech ttobj;
+
+    boolean backwards = false;
 
     RadioButton option1, option2;
 
@@ -121,25 +126,21 @@ public class Quiz extends ActionBarActivity
         wrong_shake = AnimationUtils.loadAnimation(this, R.anim.shake);
         button_shake = AnimationUtils.loadAnimation(this, R.anim.buttonshake);
         jump_forward = AnimationUtils.loadAnimation(this, R.anim.jumper_forward);
+        slide_in = AnimationUtils.loadAnimation(this, R.anim.slideout);
+        slide_out = AnimationUtils.loadAnimation(this, R.anim.slidein);
 
         next.startAnimation(button_shake);
         back.startAnimation(button_shake);
 
         insertWords();
-        //arraySize = wordArr.size();
+
+        question_arr = new String[arraySize];
 
         arr = new String[arraySize];
         shuffled = new int[arraySize];
 
-        int arrcounter = 0;
-
-        for (String x : wordArr) {
-            arr[arrcounter] = x;
-            arrcounter++;
-        }
-
-
-        if (arraySize == 0) {
+        if (arraySize == 0)
+        {
             alertDialogBuilder.setTitle("Uh oh");
 
             // set dialog message
@@ -168,7 +169,15 @@ public class Quiz extends ActionBarActivity
 
             // show it
             alertDialog.show();
-        } else {
+        }
+        else
+        {
+            int arrcounter = 0;
+
+            for (String x : wordArr) {
+                arr[arrcounter] = x;
+                arrcounter++;
+            }
 
             for (int i = 0; i < arraySize; i++) {
                 numbersAvail.add(i);
@@ -176,7 +185,8 @@ public class Quiz extends ActionBarActivity
 
             Collections.shuffle(numbersAvail);
 
-            for (int i = 0; i < numbersAvail.size(); i++) {
+            for (int i = 0; i < numbersAvail.size(); i++)
+            {
                 shuffled[i] = numbersAvail.get(i);
             }
 
@@ -194,44 +204,60 @@ public class Quiz extends ActionBarActivity
         option2.setTextColor(Color.BLACK);
         final Context context = this;
 
-        if (count < (arraySize)) {
-            String temp = arr[shuffled[count]];
+        final TableRow tb1 = (TableRow) findViewById(R.id.tb1);
+        final TableRow tb2 = (TableRow) findViewById(R.id.tb2);
 
-            int random_char = rand.nextInt(temp.length());
+        if (count < (arraySize))
+        {
 
-            char random_letter = temp.charAt(random_char);
-            right_answer = Character.toString(random_letter);
+                String temp = arr[shuffled[count]];
 
-            char wrong_letter = alphabet.charAt(rand.nextInt(alphabet.length()));
+                question_arr[count] = temp;
 
-            while (wrong_letter == random_letter) {
-                wrong_letter = alphabet.charAt(rand.nextInt(alphabet.length()));
-            }
+                int random_char = rand.nextInt(temp.length());
 
-            wrong_answer = Character.toString(wrong_letter);
+                char random_letter = temp.charAt(random_char);
+                right_answer = Character.toString(random_letter);
 
-            for (int i = 0; i < temp.length(); i++) {
-                if (temp.charAt(i) == random_letter)
-                    builder.append("_");
+                char wrong_letter = alphabet.charAt(rand.nextInt(alphabet.length()));
 
-                else
-                    builder.append(temp.charAt(i));
-            }
+                while (wrong_letter == random_letter) {
+                    wrong_letter = alphabet.charAt(rand.nextInt(alphabet.length()));
+                }
 
-            String modified_word = builder.toString();
-            question.setText(modified_word);
-            builder.delete(0, temp.length());
+                wrong_answer = Character.toString(wrong_letter);
 
-            if (rand.nextInt(2) == 1) {
-                option1.setText(right_answer);
-                option2.setText(wrong_answer);
-            } else {
-                option1.setText(wrong_answer);
-                option2.setText(right_answer);
-            }
 
-            count++;
-        } else {
+                for (int i = 0; i < temp.length(); i++)
+                {
+                    if (temp.charAt(i) == random_letter)
+                        builder.append("_");
+
+                    else
+                        builder.append(temp.charAt(i));
+                }
+
+                String modified_word = builder.toString();
+                question.setText(modified_word);
+
+                builder.delete(0, temp.length());
+
+                if (rand.nextInt(2) == 1)
+                {
+                    option1.setText(right_answer);
+                    option2.setText(wrong_answer);
+                } else
+                {
+                    option1.setText(wrong_answer);
+                    option2.setText(right_answer);
+                }
+                count++;
+        }
+        else
+        {
+
+            tb1.setVisibility(View.INVISIBLE);
+            tb2.setVisibility(View.INVISIBLE);
 
             alertDialogBuilder.setTitle("Good Job! You Did It!");
 
@@ -252,9 +278,13 @@ public class Quiz extends ActionBarActivity
                             option2.setText("");
 
                             count = 0;
+                            backcount = 0;
 
                             nextQuestion(question, option1, option2);
                             dialog.cancel();
+                            tb1.setVisibility(View.VISIBLE);
+                            tb2.setVisibility(View.VISIBLE);
+
                         }
                     })
                     .setPositiveButton("No, Thank you!", new DialogInterface.OnClickListener() {
@@ -298,8 +328,6 @@ public class Quiz extends ActionBarActivity
     }
 
 
-
-
     private OnClickListener buttonListener;
 
     {
@@ -310,36 +338,70 @@ public class Quiz extends ActionBarActivity
                 TextView question = (TextView) findViewById(R.id.question);
                 RadioButton option1 = (RadioButton) findViewById(R.id.option1);
                 RadioButton option2 = (RadioButton) findViewById(R.id.option2);
+                TableRow tb1 = (TableRow) findViewById(R.id.tb1);
+                TableRow tb2 = (TableRow) findViewById(R.id.tb2);
                 question_play = (Button) findViewById(R.id.question_playboi);
 
                 switch (v.getId()) {
                     case R.id.next:
-                        question.setText("");
-
-                        question.startAnimation(question_spin);
-                        question_play.startAnimation(question_spin);
 
                         option1.setChecked(false);
                         option2.setChecked(false);
 
-                        nextQuestion(question, option1, option2);
+                        backwards = false;
+
+                        if (backcount <= count  || count >= arraySize)
+                        {
+
+                            option1.setVisibility(View.VISIBLE);
+                            option2.setVisibility(View.VISIBLE);
+                            tb1.setVisibility(View.VISIBLE);
+                            tb2.setVisibility(View.VISIBLE);
+
+                            tb1.startAnimation(slide_in);
+                            tb2.startAnimation(slide_in);
+
+                            question.setText("");
+                            question.startAnimation(slide_in);
+
+                            nextQuestion(question, option1, option2);
+
+                        }
+                        else
+                        {
+                            question.setText("");
+                            question.startAnimation(slide_in);
+                            question.setText(question_arr[count]);
+                            tb1.setVisibility(View.INVISIBLE);
+                            tb2.setVisibility(View.INVISIBLE);
+
+                            count++;
+
+                        }
 
                         break;
 
                     case R.id.back:
 
-                        if (count != 0) {
-                            count--;
-                            question.setText("");
+                        if (count > 1)
+                        {
+                            question.startAnimation(slide_out);
 
-                            question.startAnimation(question_spin);
-                           // question_play.startAnimation(question_spin);
+                            count--;
+
+                            if(backcount < count )
+                                backcount = count;
+
+
+                            question.setText("");
+                            //question.startAnimation(question_spin);
 
                             option1.setChecked(false);
                             option2.setChecked(false);
-                            nextQuestion(question, option1, option2);
 
-                            //Pass right and wrong answers into an array and use count to retrieve em
+                            question.setText(question_arr[count-1]);
+                            tb1.setVisibility(View.INVISIBLE);
+                            tb2.setVisibility(View.INVISIBLE);
                         }
 
                         break;
@@ -396,8 +458,6 @@ public class Quiz extends ActionBarActivity
                             option2.setText("");
 
                             check_1 = false;
-                            //check_2 = false;
-
 
                             nextQuestion(question, option1, option2);
                         }
@@ -407,6 +467,8 @@ public class Quiz extends ActionBarActivity
                             option1.setTextColor(Color.RED);
                             option2.setTextColor(Color.BLACK);
                         }
+
+
 
                         break;
 
@@ -427,9 +489,7 @@ public class Quiz extends ActionBarActivity
                             option1.setText("");
                             option2.setText("");
 
-                            //check_1 = false;
                             check_2 = false;
-
 
                             nextQuestion(question, option1, option2);
                         }
@@ -465,9 +525,13 @@ public class Quiz extends ActionBarActivity
             temp = text.split(" ");
 
             int blah = 0;
-            for (String x : temp) {
-                wordArr.add(x);
-                blah++;
+            for (String x : temp)
+            {
+                if (x != "")
+                {
+                    wordArr.add(x);
+                    blah++;
+                }
             }
             arraySize = blah;
             blah = 0;
@@ -514,7 +578,6 @@ public class Quiz extends ActionBarActivity
                 System.out.println("Error while closing stream: " + ioe);
             }
         }
-
     }
     @Override
     public void onPause(){

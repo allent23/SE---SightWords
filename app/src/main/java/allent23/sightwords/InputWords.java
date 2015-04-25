@@ -3,24 +3,26 @@ package allent23.sightwords;
 import android.app.AlertDialog;
 import android.content.Context;
 import android.content.DialogInterface;
-import android.content.Intent;
-import android.graphics.drawable.Drawable;
-import android.media.AudioManager;
+import android.graphics.Color;
 import android.os.Bundle;
-import android.speech.tts.Voice;
 import android.support.v7.app.ActionBarActivity;
-import android.view.KeyEvent;
+import android.text.InputFilter;
+import android.text.InputType;
+import android.text.Layout;
+import android.text.Spanned;
+import android.view.Gravity;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.view.ViewManager;
+import android.view.ViewParent;
 import android.widget.Button;
-import android.widget.LinearLayout;
 
 import android.text.Editable;
 import android.text.TextWatcher;
+import android.widget.CheckBox;
 import android.widget.EditText;
-import android.widget.RelativeLayout;
-import android.widget.TableRow;
+import android.widget.LinearLayout;
 
 import java.io.BufferedReader;
 import java.io.File;
@@ -30,33 +32,23 @@ import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStreamReader;
 import java.util.ArrayList;
-import java.util.Collections;
-import java.util.HashMap;
 import java.util.List;
 
-import com.abbyy.mobile.lingvo.api.TranslationContract;
-
-import com.paragon.open.dictionary.api.Dictionary;
-import com.paragon.open.dictionary.api.OpenDictionaryAPI;
-
-import android.os.Bundle;
-import android.speech.tts.TextToSpeech;
+import android.widget.ScrollView;
+import android.widget.TableRow;
 import android.widget.Toast;
-
-import java.util.Locale;
 
 
 public class InputWords extends ActionBarActivity {
 
     List<String> list = new ArrayList<String>();
-    ArrayList<EditText> arr = new ArrayList<EditText>();
+    ArrayList<EditText> edit_list = new ArrayList<EditText>();
+    ArrayList<CheckBox> check_list = new ArrayList<CheckBox>();
     Context context = this;
     int bytecounter;
     String FILENAME = "SightWords";
-    String[] temp = new String[10];
-    String[] temp2 = new String[10];
-
-
+    String[] temp;
+    ScrollView scrollView;
 
 //    OpenDictionaryAPI api = new OpenDictionaryAPI(context);
     //Dictionary dict = new Dictionary.TranslateAsTextListener();
@@ -66,78 +58,24 @@ public class InputWords extends ActionBarActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.inputwords);
 
-        //api.showTranslation("cheese");
-
-
-
-
         Button back = (Button) findViewById(R.id.home);
         Button apply = (Button) findViewById(R.id.applywords);
         Button delete = (Button) findViewById(R.id.delete);
-        Button add = (Button) findViewById(R.id.edit);
-
-
-        EditText word_2 = (EditText) findViewById(R.id.editText2);
-        word_2.addTextChangedListener(textListener);
-        arr.add(word_2);
-
-        EditText word_3 = (EditText) findViewById(R.id.editText3);
-        word_3.addTextChangedListener(textListener);
-        arr.add(word_3);
-
-        EditText word_4 = (EditText) findViewById(R.id.editText4);
-        word_4.addTextChangedListener(textListener);
-        arr.add(word_4);
-
-        EditText word_5 = (EditText) findViewById(R.id.editText5);
-        word_5.addTextChangedListener(textListener);
-        arr.add(word_5);
-
-        EditText word_6 = (EditText) findViewById(R.id.editText6);
-        word_6.addTextChangedListener(textListener);
-        arr.add(word_6);
-
-        EditText word_7 = (EditText) findViewById(R.id.editText7);
-        word_7.addTextChangedListener(textListener);
-        arr.add(word_7);
-
-        EditText word_8 = (EditText) findViewById(R.id.editText8);
-        word_8.addTextChangedListener(textListener);
-        arr.add(word_8);
-
-        EditText word_9 = (EditText) findViewById(R.id.editText9);
-        word_9.addTextChangedListener(textListener);
-        arr.add(word_9);
-
-        EditText word_10 = (EditText) findViewById(R.id.editText10);
-        word_10.addTextChangedListener(textListener);
-        arr.add(word_10);
-
-        outputWords();
+        Button add = (Button) findViewById(R.id.add);
 
         back.setOnClickListener(buttonListener);
         apply.setOnClickListener(buttonListener);
         delete.setOnClickListener(buttonListener);
         add.setOnClickListener(buttonListener);
 
-    }
+        outputWords();
 
-
-
-
-
-    @Override
-    public boolean onKeyDown(int keyCode, KeyEvent event) {
-
-        switch (keyCode) {
-            case KeyEvent.KEYCODE_SPACE:
-            {
-                event.isCanceled();
-                System.out.println("I hit space");
-                return true;
-            }
+        for (EditText x : edit_list)
+        {
+            x.addTextChangedListener(textListener);
         }
-        return super.onKeyDown(keyCode, event);
+
+        filter();
     }
 
     @Override
@@ -172,8 +110,10 @@ public class InputWords extends ActionBarActivity {
 
                 Button apply = (Button) findViewById(R.id.applywords);
                 Button delete = (Button) findViewById(R.id.delete);
-                Button edit = (Button) findViewById(R.id.edit); //ADD WORDS button
-                RelativeLayout layout = (RelativeLayout) findViewById(R.id.rel_layout);
+                Button edit = (Button) findViewById(R.id.add); //ADD WORDS button
+
+                scrollView = (ScrollView) findViewById(R.id.scrollView);
+                LinearLayout layout = (LinearLayout) findViewById(R.id.layout);
 
                 // Check which button was clicked
                 switch (v.getId()) {
@@ -205,18 +145,16 @@ public class InputWords extends ActionBarActivity {
                                             //FileOutputStream fos = new FileOutputStream(file);
                                             String blank = " ";
                                             bytecounter = 0;
-                                            for (EditText edittext : arr) {
+                                            for (EditText edittext : edit_list) {
 
                                                 String string = edittext.getText().toString();
 
-                                                try
-                                                {
+                                                try {
                                                     fos.write(string.getBytes());
                                                     fos.write(blank.getBytes());
                                                     bytecounter += (string.length() + 1);
 
-                                                }
-                                                catch (IOException e) {
+                                                } catch (IOException e) {
                                                     e.printStackTrace();
                                                 }
                                             }
@@ -247,7 +185,69 @@ public class InputWords extends ActionBarActivity {
 
                     case R.id.delete:
 
+                        int size = edit_list.size();
 
+                        CheckBox[] check_arr = new CheckBox[size];
+                        EditText[] edit_arr = new EditText[size];
+
+                        check_list.toArray(check_arr);
+                        edit_list.toArray(edit_arr);
+
+                        for (int i = 0; i < size ; i++)
+                        {
+                            if (check_arr[i].isChecked())
+                            {
+                                EditText text =  edit_arr[i];
+                                View viewParent =  (View) text.getParent();
+                                viewParent.setVisibility(View.GONE);
+
+                                edit_list.remove(text);
+                            }
+                        }
+
+                        try
+                        {
+                            File file = new File(FILENAME);
+                            // Store Serialized User Object in File
+                            FileOutputStream fos = openFileOutput(FILENAME, Context.MODE_PRIVATE);
+
+                            String blank = " ";
+                            bytecounter = 0;
+                            for (EditText edittext : edit_list) {
+
+                                String string = edittext.getText().toString();
+                                try
+                                {
+                                    fos.write(string.getBytes());
+                                    fos.write(blank.getBytes());
+                                    bytecounter += (string.length() + 1);
+
+                                } catch (IOException e) {
+                                    e.printStackTrace();
+                                }
+                            }
+                            fos.close();
+
+
+                        } catch (FileNotFoundException e) {
+                            e.printStackTrace();
+                        } catch (IOException e) {
+                            e.printStackTrace();
+                        }
+                        Toast.makeText(getApplicationContext(), "All selected words have been deleted",
+                                Toast.LENGTH_SHORT).show();
+
+                        break;
+
+                    case R.id.add:
+
+                        addEditText(layout);
+
+                        filter();
+
+                        Toast.makeText(getApplicationContext(), "New field added!\nPlease enter a word", Toast.LENGTH_SHORT).show();
+
+                        scrollView.fullScroll(View.FOCUS_DOWN);
 
                         break;
 
@@ -262,7 +262,7 @@ public class InputWords extends ActionBarActivity {
         FileInputStream in = null;
         try
         {
-
+            LinearLayout layout = (LinearLayout) findViewById(R.id.layout);
             in = openFileInput(FILENAME);
             InputStreamReader inputStreamReader = new InputStreamReader(in);
             BufferedReader bufferedReader = new BufferedReader(inputStreamReader);
@@ -279,28 +279,20 @@ public class InputWords extends ActionBarActivity {
             temp = text.split(" ");
 
 
-            for (String x : temp)
+            for(String x : temp)
             {
-                if ((!x.equals("")) && (x != null))
-                {
-                    temp2[counter] = x;
-                    counter++;
-                }
+                if(!x.equals("") && x != null)
+                    addEditText(layout);
             }
-            counter = 0;
-            for (EditText edittext : arr)
-            {
-                if(counter <= (temp2.length - 1))
-                {
-                    edittext.setText(temp2[counter]);
-                    counter++;
-                }
 
+            for (EditText edittext : edit_list)
+            {
+                    edittext.setText(temp[counter]);
+                    counter++;
             }
 
 
-        }
-        catch (FileNotFoundException e) {
+        } catch (FileNotFoundException e) {
         } catch (IOException ioe) {
             System.out.println("Exception while reading file " + ioe);
         } finally {
@@ -323,8 +315,7 @@ public class InputWords extends ActionBarActivity {
         textListener = new TextWatcher() {
 
 
-            public void afterTextChanged(Editable s)
-            {
+            public void afterTextChanged(Editable s) {
 
             }
 
@@ -333,10 +324,87 @@ public class InputWords extends ActionBarActivity {
             }
 
 
-            public void onTextChanged(CharSequence s, int start, int before, int count)
-            {
+            public void onTextChanged(CharSequence s, int start, int before, int count) {
 
             }
         };
+    }
+
+    public void filter() {
+        for (EditText x : edit_list) {
+            x.setInputType(InputType.TYPE_CLASS_TEXT | InputType.TYPE_TEXT_FLAG_AUTO_CORRECT);
+
+            InputFilter[] filters = new InputFilter[1];
+            filters[0] = new InputFilter() {
+                @Override
+                public CharSequence filter(CharSequence src, int start,
+                                           int end, Spanned dst, int dstart, int dend)
+                {
+
+                    if (src.equals("")) { // for backspace
+                        return src;
+                    }
+
+                    if (src.toString().matches("[a-zA-Z]*")) //put your constraints here
+                    {
+                        return src;
+                    }
+                    return "";
+                }
+            };
+            x.setFilters(filters);
+        }
+    }
+
+    public void addEditText(LinearLayout layout)
+    {
+        TableRow new_row = new TableRow(getApplicationContext());
+        EditText new_edit = new EditText(getApplicationContext());
+        CheckBox new_check = new CheckBox(getApplicationContext());
+
+        new_row.setWeightSum(100);
+
+
+        TableRow.LayoutParams rowprops = new TableRow.LayoutParams(
+                TableRow.LayoutParams.MATCH_PARENT, TableRow.LayoutParams.WRAP_CONTENT);
+
+
+        TableRow.LayoutParams checkprops = new TableRow.LayoutParams(
+                TableRow.LayoutParams.MATCH_PARENT, TableRow.LayoutParams.MATCH_PARENT);
+
+        checkprops.weight = 90;
+
+        TableRow.LayoutParams editprops = new TableRow.LayoutParams(
+                TableRow.LayoutParams.MATCH_PARENT, TableRow.LayoutParams.WRAP_CONTENT);
+
+        editprops.weight = 10;
+
+        new_row.setLayoutParams(rowprops);
+        new_edit.setLayoutParams(editprops);
+        new_check.setLayoutParams(checkprops);
+
+        new_row.setGravity(Gravity.CENTER);
+
+        new_check.setGravity(Gravity.CENTER);
+
+        new_edit.setGravity(Gravity.CENTER | Gravity.BOTTOM);
+        new_edit.setTextAlignment(View.TEXT_ALIGNMENT_CENTER);
+
+        new_edit.setBackgroundColor(Color.argb(188, 46, 46, 46));
+        new_check.setBackgroundColor(Color.argb(188, 155, 239, 255));
+
+        new_edit.setHint("Input Word");
+        new_edit.setTextSize(30);
+
+        new_edit.addTextChangedListener(textListener);
+
+        layout.addView(new_row);
+        new_row.addView(new_edit);
+        new_row.addView(new_check);
+
+        edit_list.add(new_edit);
+        check_list.add(new_check);
+        System.out.println("check added");
+
     }
 }
