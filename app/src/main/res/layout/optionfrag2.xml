@@ -17,7 +17,7 @@
             android:layout_height="match_parent"
             android:id="@+id/settings"
             android:contentDescription="options"
-            android:src="@drawable/setting"
+            android:src="@drawable/flashcards2"
             android:layout_alignParentEnd="true"
             android:focusable="false"
             android:clickable="false"
