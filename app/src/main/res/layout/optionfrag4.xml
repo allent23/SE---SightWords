@@ -10,25 +10,33 @@
         android:orientation="vertical"
         android:layout_width="fill_parent"
         android:layout_height="fill_parent"
-        android:weightSum="100">
+        android:weightSum="100" >
+
+        <ImageView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:id="@+id/imageView11"
+            android:layout_gravity="center_horizontal"
+            android:layout_weight="35"
+            android:src="@drawable/writingnote"
+            android:background="@drawable/maintitle" />
 
         <ImageView
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:id="@+id/settings"
+            android:id="@+id/imageView12"
             android:contentDescription="options"
-            android:src="@drawable/setting"
+            android:src="@drawable/writin"
             android:layout_alignParentEnd="true"
             android:focusable="false"
             android:clickable="false"
-            android:layout_weight="90" />
+            android:layout_weight="65" />
 
         <ImageView
             android:layout_width="30dp"
             android:layout_height="30dp"
-            android:id="@+id/imageView2"
+            android:id="@+id/imageView13"
             android:src="@android:drawable/arrow_down_float"
             android:layout_gravity="center_horizontal" />
     </LinearLayout>
-
 </RelativeLayout>

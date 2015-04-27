@@ -22,92 +22,6 @@ import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.widget.ImageView;
 
-
-
-/*
-public class MainMenu extends ActionBarActivity
-{
-*//*
-
-    @Override
-    protected void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_main_menu);
-
-        Button flashcard = (Button) findViewById(R.id.flashcard_button);
-        Button writingboard = (Button) findViewById(R.id.writing_button);
-        Button quiz = (Button) findViewById(R.id.quiz_button);
-        Button inputwords = (Button) findViewById(R.id.input_button);
-
-        flashcard.setOnClickListener(buttonListener);
-        writingboard.setOnClickListener(buttonListener);
-        quiz.setOnClickListener(buttonListener);
-        inputwords.setOnClickListener(buttonListener);
-
-    }
-
-    @Override
-    public boolean onCreateOptionsMenu(Menu menu) {
-        // Inflate the menu; this adds items to the action bar if it is present.
-        getMenuInflater().inflate(R.menu.menu_main_menu, menu);
-        return true;
-    }
-
-    @Override
-    public boolean onOptionsItemSelected(MenuItem item) {
-        // Handle action bar item clicks here. The action bar will
-        // automatically handle clicks on the Home/Up button, so long
-        // as you specify a parent activity in AndroidManifest.xml.
-        int id = item.getItemId();
-
-        //noinspection SimplifiableIfStatement
-        if (id == R.id.action_settings) {
-            return true;
-        }
-
-        return super.onOptionsItemSelected(item);
-    }
-
-    private View.OnClickListener buttonListener;
-
-    {
-
-        buttonListener = new View.OnClickListener() {
-
-            @Override
-            public void onClick(View v)
-            {
-
-                Button activities = (Button) v;
-
-                if (activities.getText().equals("Flash Cards"))
-                {
-                    Intent flashcardpage = new Intent(MainMenu.this, FlashCards.class);
-                    startActivity(flashcardpage);
-                    //Dont forget to add new class intents into the android manifest bruh.
-                }
-                if (activities.getText().equals("Quiz"))
-                {
-                    Intent quizpage = new Intent(MainMenu.this, Quiz.class);
-                    startActivity(quizpage);
-                    //Dont forget to add new class intents into the android manifest bruh.
-                }
-                if (activities.getText().equals("Input Words"))
-                {
-                    Intent inputwordspage = new Intent(MainMenu.this, InputWords.class);
-                    startActivity(inputwordspage);
-                    //Dont forget to add new class intents into the android manifest bruh.
-                }
-
-            }
-
-        };
-    }*//*
-
-
-}
-*/
-
 public class MainMenu extends ActionBarActivity {
     /**
      * The number of pages (wizard steps) to show in this demo.
@@ -173,6 +87,11 @@ public class MainMenu extends ActionBarActivity {
                                 startActivity(flashcardpage);
                                 break;
                             case 2:
+                                Intent writing = new Intent(MainMenu.this, Writing.class);
+                                startActivity(writing);
+                                break;
+
+                            case 3:
                                 Intent quizpage = new Intent(MainMenu.this, Quiz.class);
                                 startActivity(quizpage);
                                 break;
@@ -201,7 +120,7 @@ public class MainMenu extends ActionBarActivity {
 class MyPagerAdapter extends PagerAdapter
 {
     public int getCount() {
-        return 3;
+        return 4;
     }
 
     public Object instantiateItem(ViewGroup container, int position) {
@@ -209,7 +128,6 @@ class MyPagerAdapter extends PagerAdapter
                 .getSystemService(Context.LAYOUT_INFLATER_SERVICE);
 
         // Using different layouts in the view pager instead of images.
-
         int resId = -1;
         View view = null;
 
@@ -228,6 +146,12 @@ class MyPagerAdapter extends PagerAdapter
                 break;
 
             case 2:
+                resId = R.layout.optionfrag4;
+                view = inflater.inflate(resId, container, false);
+                ((ViewPager) container).addView(view, 0);
+                break;
+
+            case 3:
                 resId = R.layout.optionfrag3;
                 view = inflater.inflate(resId, container, false);
                 ((ViewPager) container).addView(view, 0);
