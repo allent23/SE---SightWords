@@ -27,7 +27,7 @@
             android:layout_height="fill_parent"
             android:id="@+id/enter"
             android:layout_gravity="center_horizontal"
-            android:background="@drawable/nextt"
+            android:background="@drawable/go"
             android:layout_weight="90" />
     </LinearLayout>
 

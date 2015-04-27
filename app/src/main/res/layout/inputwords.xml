@@ -19,34 +19,26 @@
     <Button
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="@string/applywords"
         android:id="@+id/applywords"
         android:layout_alignParentBottom="true"
-        android:layout_alignParentEnd="true" />
+        android:layout_alignParentEnd="true"
+        android:background="@drawable/new_apply" />
 
     <Button
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="@string/delete"
         android:id="@+id/delete"
         android:layout_alignParentBottom="true"
-        android:layout_alignParentStart="true" />
+        android:layout_alignParentStart="true"
+        android:background="@drawable/new_delete" />
 
     <Button
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="@string/add"
         android:id="@+id/add"
         android:layout_alignParentTop="true"
-        android:layout_alignParentEnd="true" />
-
-    <Button
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:id="@+id/home"
-        android:layout_alignBottom="@+id/add"
-        android:layout_alignParentStart="true"
-        android:background="@drawable/back" />
+        android:layout_alignParentEnd="true"
+        android:background="@drawable/new_add" />
 
     <ScrollView
         android:layout_width="fill_parent"
@@ -73,13 +65,20 @@
         android:layout_height="wrap_content"
         android:text="@string/inputwords_title"
         android:id="@+id/textView"
-        android:textSize="30sp"
-        android:textStyle="bold|italic"
+        android:textSize="50sp"
         android:textColorHighlight="#ffffffff"
-        android:layout_below="@+id/add"
-        android:layout_centerHorizontal="true"
-        android:textColor="#ff010101"
-        android:backgroundTint="#7ca0a0a0" />
+        android:textColor="#ffffffff"
+        android:background="#972c2c2c"
+        android:layout_below="@+id/home"
+        android:layout_centerHorizontal="true" />
+
+    <Button
+        android:layout_width="50dp"
+        android:layout_height="50dp"
+        android:id="@+id/home"
+        android:background="@drawable/home"
+        android:layout_alignTop="@+id/add"
+        android:layout_alignParentStart="true" />
 
 
 </RelativeLayout>

@@ -591,9 +591,6 @@ public class Quiz extends ActionBarActivity
     }
 
     public void speakText(String toSpeak) {
-
-        Toast.makeText(getApplicationContext(), toSpeak, Toast.LENGTH_SHORT).show();
-
         Intent intent = new Intent();
 
         Bundle bundle = intent.getExtras();

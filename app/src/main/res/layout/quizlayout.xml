@@ -43,7 +43,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:id="@+id/next"
-        android:background="@drawable/nextt"
+        android:background="@drawable/new_next"
         android:layout_alignParentBottom="true"
         android:layout_alignEnd="@+id/question" />
 
@@ -53,7 +53,7 @@
         android:id="@+id/back"
         android:layout_alignParentBottom="true"
         android:layout_alignParentStart="false"
-        android:background="@drawable/backk" />
+        android:background="@drawable/new_back" />
 
     <LinearLayout
         android:orientation="vertical"
