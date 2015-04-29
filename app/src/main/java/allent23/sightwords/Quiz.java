@@ -49,42 +49,33 @@ import static android.view.View.OnClickListener;
 
 public class Quiz extends ActionBarActivity
 {
-    Context context = this;
+    Context context = this; //get application context
     AlertDialog.Builder alertDialogBuilder;
-
-    int arraySize = 0;
-
-    String alphabet = "abcdefghijklmnopqrstuvwxyz";
-
-    Random rand = new Random();
-    StringBuilder builder = new StringBuilder();
-
+    String FILENAME = "SightWords"; //file name
+    String alphabet = "abcdefghijklmnopqrstuvwxyz"; //alphabet to pick random letter
     String right_answer;
     String wrong_answer;
 
-    String FILENAME = "SightWords";
-
-    String[] arr;
-    int[] shuffled;
-
-    List<Integer> numbersAvail = new ArrayList<>();
-    List<String> wordArr = new ArrayList<>();
-
-    String[] temp = new String[arraySize];
-    String[] option1_arr, option2_arr, question_arr, right_arr, wrong_arr;
-
+    //sizes, and counts
+    int arraySize = 0;
     int count = 0;
     int backcount = 0;
 
+    Random rand = new Random(); //random for picking a random
+    StringBuilder builder = new StringBuilder();
+
+    //All arrays and lists needed
+    String[] arr;
+    String[] temp = new String[arraySize];
+    String[] question_arr;
+    List<String> wordArr = new ArrayList<>();
+
+    //declare animation to use
     Animation question_spin, jump_forward, wrong_shake, button_shake, slide_in, slide_out;
 
     LinearLayout lin_layout;
     Button option1_play, option2_play, question_play;
     TextToSpeech ttobj;
-
-    boolean backwards = false;
-
-    RadioButton option1, option2;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -103,30 +94,30 @@ public class Quiz extends ActionBarActivity
 
         alertDialogBuilder = new AlertDialog.Builder(context);
 
+        //set id's needed
         Button home = (Button) findViewById(R.id.home);
         Button next = (Button) findViewById(R.id.next);
         Button back = (Button) findViewById(R.id.back);
         RadioButton option1 = (RadioButton) findViewById(R.id.option1);
         RadioButton option2 = (RadioButton) findViewById(R.id.option2);
         lin_layout = (LinearLayout) findViewById(R.id.lin_layout);
-
         option1_play = (Button) findViewById(R.id.option1_play);
         option2_play = (Button) findViewById(R.id.option2_play);
         question_play = (Button) findViewById(R.id.question_playboi);
 
         TextView question = (TextView) findViewById(R.id.question);
 
+        //set listeners
         home.setOnClickListener(buttonListener);
         next.setOnClickListener(buttonListener);
         back.setOnClickListener(buttonListener);
-
-        option1.setOnClickListener(radioListener);
-        option2.setOnClickListener(radioListener);
-
         question_play.setOnClickListener(buttonListener);
         option1_play.setOnClickListener(buttonListener);
         option2_play.setOnClickListener(buttonListener);
+        option1.setOnClickListener(radioListener);
+        option2.setOnClickListener(radioListener);
 
+        //set animations
         question_spin = AnimationUtils.loadAnimation(this, R.anim.question_full_shake);
         wrong_shake = AnimationUtils.loadAnimation(this, R.anim.shake);
         button_shake = AnimationUtils.loadAnimation(this, R.anim.buttonshake);
@@ -134,16 +125,17 @@ public class Quiz extends ActionBarActivity
         slide_in = AnimationUtils.loadAnimation(this, R.anim.cardflip_left_in);
         slide_out = AnimationUtils.loadAnimation(this, R.anim.cardflip_left_out);
 
+        //start button shakes
         next.startAnimation(button_shake);
         back.startAnimation(button_shake);
 
-        insertWords();
+        insertWords(); //insert the words if they are there
 
+        //initialize arrays
         question_arr = new String[arraySize];
-
         arr = new String[arraySize];
-        shuffled = new int[arraySize];
 
+        //if its empty, then pop a dialog up
         if (arraySize == 0)
         {
             alertDialogBuilder.setTitle("Uh oh");
@@ -175,138 +167,11 @@ public class Quiz extends ActionBarActivity
             // show it
             alertDialog.show();
         }
-        else
+        else //otherwise start first question
         {
-            int arrcounter = 0;
-
-            for (String x : wordArr) {
-                arr[arrcounter] = x;
-                arrcounter++;
-            }
-
-            for (int i = 0; i < arraySize; i++) {
-                numbersAvail.add(i);
-            }
-
-            Collections.shuffle(numbersAvail);
-
-            for (int i = 0; i < numbersAvail.size(); i++)
-            {
-                shuffled[i] = numbersAvail.get(i);
-            }
-
+            Collections.shuffle(wordArr);
+            wordArr.toArray(arr);
             nextQuestion(question, option1, option2);
-        }
-    }
-
-    void nextQuestion(final TextView question, final RadioButton option1, final RadioButton option2) {
-        alertDialogBuilder = new AlertDialog.Builder(context);
-        //store right and wrong in arrays for back button
-        option1.setChecked(false);
-        option2.setChecked(false);
-
-        option1.setTextColor(Color.BLACK);
-        option2.setTextColor(Color.BLACK);
-        final Context context = this;
-
-        final TableRow tb1 = (TableRow) findViewById(R.id.tb1);
-        final TableRow tb2 = (TableRow) findViewById(R.id.tb2);
-
-        if (count < (arraySize))
-        {
-
-                String temp = arr[shuffled[count]];
-
-                question_arr[count] = temp;
-
-                int random_char = rand.nextInt(temp.length());
-
-                char random_letter = temp.charAt(random_char);
-                right_answer = Character.toString(random_letter);
-
-                char wrong_letter = alphabet.charAt(rand.nextInt(alphabet.length()));
-
-                while (wrong_letter == random_letter) {
-                    wrong_letter = alphabet.charAt(rand.nextInt(alphabet.length()));
-                }
-
-                wrong_answer = Character.toString(wrong_letter);
-
-
-                for (int i = 0; i < temp.length(); i++)
-                {
-                    if (temp.charAt(i) == random_letter)
-                        builder.append("_");
-
-                    else
-                        builder.append(temp.charAt(i));
-                }
-
-                String modified_word = builder.toString();
-                question.setText(modified_word);
-
-                builder.delete(0, temp.length());
-
-                if (rand.nextInt(2) == 1)
-                {
-                    option1.setText(right_answer);
-                    option2.setText(wrong_answer);
-                } else
-                {
-                    option1.setText(wrong_answer);
-                    option2.setText(right_answer);
-                }
-                count++;
-        }
-        else
-        {
-
-            tb1.setVisibility(View.INVISIBLE);
-            tb2.setVisibility(View.INVISIBLE);
-
-            alertDialogBuilder.setTitle("Good Job! You Did It!");
-
-            // set dialog message
-            alertDialogBuilder
-                    .setMessage("Play Again?")
-                    .setCancelable(false).setInverseBackgroundForced(true)
-                    .setNegativeButton("Yes, Please!", new DialogInterface.OnClickListener() {
-                        public void onClick(DialogInterface dialog, int id) {
-
-                            question.setText("All Done! Good Job!");
-                            Collections.shuffle(numbersAvail);
-
-                            for (int i = 0; i < numbersAvail.size(); i++)
-                                shuffled[i] = numbersAvail.get(i);
-
-                            option1.setText("");
-                            option2.setText("");
-
-                            count = 0;
-                            backcount = 0;
-
-                            nextQuestion(question, option1, option2);
-                            dialog.cancel();
-                            tb1.setVisibility(View.VISIBLE);
-                            tb2.setVisibility(View.VISIBLE);
-
-                        }
-                    })
-                    .setPositiveButton("No, Thank you!", new DialogInterface.OnClickListener() {
-                        public void onClick(DialogInterface dialog, int id) {
-                            // if this button is clicked, just close
-                            // the dialog box and do nothing
-                            Quiz.this.finish();
-
-                        }
-                    });
-
-            // create alert dialog
-            AlertDialog alertDialog = alertDialogBuilder.create();
-
-            // show it
-            alertDialog.show();
-
         }
     }
 
@@ -332,9 +197,8 @@ public class Quiz extends ActionBarActivity
         return super.onOptionsItemSelected(item);
     }
 
-
+    //listener for the buttons
     private OnClickListener buttonListener;
-
     {
         buttonListener = new OnClickListener() {
             @Override
@@ -346,16 +210,14 @@ public class Quiz extends ActionBarActivity
 
 
                 switch (v.getId()) {
-                    case R.id.next:
+                    case R.id.next: //if the next is hit
 
                         option1.setChecked(false);
                         option2.setChecked(false);
 
-                        backwards = false;
-
+                        //if the user count has caught back up, start the options again
                         if (backcount <= count  || count >= arraySize)
                         {
-
                             option1.setVisibility(View.VISIBLE);
                             option2.setVisibility(View.VISIBLE);
                             lin_layout.setVisibility(View.VISIBLE);
@@ -367,9 +229,8 @@ public class Quiz extends ActionBarActivity
                             question_play.startAnimation(slide_in);
 
                             nextQuestion(question, option1, option2);
-
                         }
-                        else
+                        else //otherwise hide the options and move along
                         {
                             question.setText("");
                             question.startAnimation(slide_in);
@@ -379,14 +240,13 @@ public class Quiz extends ActionBarActivity
 
                             count++;
                         }
-
                         break;
 
-                    case R.id.back:
+                    case R.id.back: //if the back button is clicked
 
-                        if (count > 1)
+                        if (count > 1) //if the question isnt the first one
                         {
-                            count--;
+                            count = count - 2;
 
                             if(backcount < count )
                                 backcount = count;
@@ -400,24 +260,23 @@ public class Quiz extends ActionBarActivity
                             option1.setChecked(false);
                             option2.setChecked(false);
 
-                            question.setText(question_arr[count-1]);
-
+                            question.setText(question_arr[count]);
                         }
 
                         break;
 
-                    case R.id.home:
+                    case R.id.home: //if the home is click
                         Intent intent = new Intent(Quiz.this, MainMenu.class);
                         startActivities(new Intent[]{intent});
                         break;
 
-                    case R.id.question_playboi:
-                        speakText(arr[shuffled[count-1]]);
+                    case R.id.question_playboi: //if the play button is clicked
+                        speakText(arr[count-1]);
                         break;
-                    case R.id.option1_play:
+                    case R.id.option1_play: //if the play button is clicked
                         speakText(option1.getText().toString());
                         break;
-                    case R.id.option2_play:
+                    case R.id.option2_play: //if the play button is clicked
                         speakText(option2.getText().toString());
                         break;
                 }
@@ -425,6 +284,7 @@ public class Quiz extends ActionBarActivity
         };
     }
 
+    //if one of the radio options are selected
     private OnClickListener radioListener;
 
     {
@@ -434,23 +294,28 @@ public class Quiz extends ActionBarActivity
             public void onClick(View v) {
                 boolean checked = ((RadioButton) v).isChecked();
 
+                //set the ids
                 RadioButton option1 = (RadioButton) findViewById(R.id.option1);
                 RadioButton option2 = (RadioButton) findViewById(R.id.option2);
                 TextView question = (TextView) findViewById(R.id.question);
 
+                //set booleans for the checks
                 boolean check_1, check_2;
 
                 // Check which radio button was clicked
                 switch (v.getId()) {
-                    case R.id.option1:
+                    case R.id.option1: //of the option1 is clicked
 
+                        //set the other option false
                         option1.setChecked(true);
                         option2.setChecked(false);
 
+                        //set the boolean
                         check_1 = option1.isChecked();
 
-                        if ((check_1 == true) && (option1.getText() == right_answer)) {
-
+                        //if the check is true and is correct
+                        if ((check_1 == true) && (option1.getText() == right_answer))
+                        {
                             option1.setText("");
                             option2.setText("");
 
@@ -458,27 +323,30 @@ public class Quiz extends ActionBarActivity
                             question_play.startAnimation(slide_in);
                             lin_layout.startAnimation(slide_in);
 
-                            check_1 = false;
+                            check_1 = false; //reset
 
-                            nextQuestion(question, option1, option2);
+                            nextQuestion(question, option1, option2); //next question
                         }
 
-                        if ((check_1 == true) && (option1.getText() == wrong_answer)) {
+                        //if the check is true and is wrong
+                        if ((check_1 == true) && (option1.getText() == wrong_answer))
+                        {
                             question.startAnimation(wrong_shake);
                             option1.setTextColor(Color.RED);
                             option2.setTextColor(Color.BLACK);
                         }
-
-
                         break;
 
-                    case R.id.option2:
+                    case R.id.option2: //if the option2 is clicked
 
+                        //set the other option false
                         option1.setChecked(false);
                         option2.setChecked(true);
 
+                        //set the boolean
                         check_2 = option2.isChecked();
 
+                        //if the check is true and is correct
                         if ((check_2 == true) && (option2.getText() == right_answer)) {
 
                             option1.setChecked(false);
@@ -493,38 +361,155 @@ public class Quiz extends ActionBarActivity
 
                             check_2 = false;
 
-                            nextQuestion(question, option1, option2);
+                            nextQuestion(question, option1, option2); //move to the next
                         }
 
+                        //if the check is true and is wrong
                         if ((check_2 == true) && (option2.getText() == wrong_answer)) {
                             question.startAnimation(wrong_shake);
                             option2.setTextColor(Color.RED);
                             option1.setTextColor(Color.BLACK);
                         }
-
                         break;
                 }
-
             }
         };
     }
 
+    //function nextQuestion move the app to the next word
+    void nextQuestion(final TextView question, final RadioButton option1, final RadioButton option2) {
+        alertDialogBuilder = new AlertDialog.Builder(context);
+
+        //store right and wrong in arrays for back button
+        option1.setChecked(false);
+        option2.setChecked(false);
+
+        //reset the colors
+        option1.setTextColor(Color.BLACK);
+        option2.setTextColor(Color.BLACK);
+
+        //set the ids for the tablerows
+        final TableRow tb1 = (TableRow) findViewById(R.id.tb1);
+        final TableRow tb2 = (TableRow) findViewById(R.id.tb2);
+
+        //if the the array isnt finished
+        if (count < (arraySize))
+        {
+            String temp = arr[count];
+            question_arr[count] = temp; //set a temp
+
+            //get a random character for an option
+            int random_char = rand.nextInt(temp.length());
+
+            char random_letter = temp.charAt(random_char);
+            right_answer = Character.toString(random_letter);
+
+            //pull a letter from the alphabet
+            char wrong_letter = alphabet.charAt(rand.nextInt(alphabet.length()));
+
+            //check if the wrong letter picked is different from the right one
+            while (wrong_letter == random_letter)
+                wrong_letter = alphabet.charAt(rand.nextInt(alphabet.length()));
+
+            wrong_answer = Character.toString(wrong_letter);
+
+            //pull the letter out and recreate the word
+            for (int i = 0; i < temp.length(); i++)
+            {
+                if (temp.charAt(i) == random_letter)
+                    builder.append("_");
+
+                else
+                    builder.append(temp.charAt(i));
+            }
+
+            String modified_word = builder.toString();
+            question.setText(modified_word); //display the word
+
+            builder.delete(0, temp.length());
+
+            //set the options randomly
+            if (rand.nextInt(2) == 1)
+            {
+                option1.setText(right_answer);
+                option2.setText(wrong_answer);
+            } else
+            {
+                option1.setText(wrong_answer);
+                option2.setText(right_answer);
+            }
+            count++; //update the count
+        }
+        else //otherwise you finished
+        {
+
+            tb1.setVisibility(View.INVISIBLE);
+            tb2.setVisibility(View.INVISIBLE);
+
+            alertDialogBuilder.setTitle("Good Job! You Did It!");
+
+            // set dialog message
+            alertDialogBuilder
+                    .setMessage("Play Again?")
+                    .setCancelable(false).setInverseBackgroundForced(true)
+                    .setNegativeButton("Yes, Please!", new DialogInterface.OnClickListener() {
+                        public void onClick(DialogInterface dialog, int id) {
+
+                            //reset the activity
+                            question.setText("All Done! Good Job!");
+                            Collections.shuffle(wordArr);
+                            wordArr.toArray(arr);
+
+                            option1.setText("");
+                            option2.setText("");
+
+                            count = 0;
+                            backcount = 0;
+
+                            nextQuestion(question, option1, option2); //start again
+                            dialog.cancel();
+                            tb1.setVisibility(View.VISIBLE);
+                            tb2.setVisibility(View.VISIBLE);
+
+                        }
+                    })
+                    .setPositiveButton("No, Thank you!", new DialogInterface.OnClickListener() {
+                        public void onClick(DialogInterface dialog, int id) {
+                            // if this button is clicked, just close
+                            // the dialog box and do nothing
+                            Quiz.this.finish(); //leave
+
+                        }
+                    });
+
+            // create alert dialog
+            AlertDialog alertDialog = alertDialogBuilder.create();
+
+            // show it
+            alertDialog.show();
+
+        }
+    }
+
+    //function insertWords reads in the words from the file
     public void insertWords() {
 
         FileInputStream in = null;
-        try {
+        try
+        {
             in = openFileInput(FILENAME);
             InputStreamReader inputStreamReader = new InputStreamReader(in);
             BufferedReader bufferedReader = new BufferedReader(inputStreamReader);
             StringBuilder sb = new StringBuilder();
             String line;
 
-            while ((line = bufferedReader.readLine()) != null) {
+            while ((line = bufferedReader.readLine()) != null)
+            {
                 sb.append(line);
             }
 
             String text = sb.toString();
-            temp = text.split(" ");
+            temp = text.split(" "); //split on the spaces in the string
 
             int blah = 0;
             for (String x : temp)
@@ -536,41 +521,16 @@ public class Quiz extends ActionBarActivity
                 }
             }
             arraySize = blah;
-            blah = 0;
 
-        } catch (FileNotFoundException e) {
-            alertDialogBuilder.setTitle("Uh oh");
+            Collections.shuffle(wordArr); //shuffle the words
 
-            // set dialog message
-            alertDialogBuilder
-                    .setMessage("No words have been inputted :(")
-                    .setCancelable(false)
-                    .setNegativeButton("Return Home", new DialogInterface.OnClickListener() {
-                        public void onClick(DialogInterface dialog, int id) {
-
-                            Quiz.this.finish();
-                        }
-                    })
-                    .setPositiveButton("Go to Settings", new DialogInterface.OnClickListener() {
-                        public void onClick(DialogInterface dialog, int id) {
-                            // if this button is clicked, just close
-                            // the dialog box and do nothing
-
-                            Intent inputwords = new Intent(Quiz.this, InputWords.class);
-                            startActivity(inputwords);
-                            Quiz.this.finish();
-                        }
-                    });
-
-            // create alert dialog
-            AlertDialog alertDialog = alertDialogBuilder.create();
-
-            // show it
-            alertDialog.show();
-
-        } catch (IOException ioe) {
+        } catch (FileNotFoundException e) {}
+        catch (IOException ioe)
+        {
             System.out.println("Exception while reading file " + ioe);
-        } finally {
+        }
+        finally
+        {
             // close the streams using close method
             try {
                 if (in != null) {
@@ -582,7 +542,8 @@ public class Quiz extends ActionBarActivity
         }
     }
     @Override
-    public void onPause(){
+    public void onPause()
+    {
         if(ttobj !=null){
             ttobj.stop();
             ttobj.shutdown();
@@ -590,15 +551,14 @@ public class Quiz extends ActionBarActivity
         super.onPause();
     }
 
-    public void speakText(String toSpeak) {
+    //used to speak the words
+    public void speakText(String toSpeak)
+    {
         Intent intent = new Intent();
-
         Bundle bundle = intent.getExtras();
-
         //has a red underline on .speak below, but works fine.
         ttobj.speak(toSpeak, TextToSpeech.QUEUE_ADD, bundle, null);
 
     }
-
 }
 

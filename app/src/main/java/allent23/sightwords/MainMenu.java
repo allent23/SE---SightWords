@@ -3,6 +3,7 @@ package allent23.sightwords;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.media.MediaPlayer;
 import android.support.v4.app.FragmentActivity;
 import android.support.v4.app.FragmentStatePagerAdapter;
 import android.support.v4.view.PagerAdapter;
@@ -23,85 +24,81 @@ import android.support.v4.app.FragmentManager;
 import android.widget.ImageView;
 
 public class MainMenu extends ActionBarActivity {
-    /**
-     * The number of pages (wizard steps) to show in this demo.
-     */
-    private static final int NUM_PAGES = 3;
 
     /**
      * The pager widget, which handles animation and allows swiping horizontally to access previous
      * and next wizard steps.
      */
     private ViewPager mPager;
-
-    /**
-     * The pager adapter, which provides the pages to the view pager widget.
-     */
-    private PagerAdapter mPagerAdapter;
+    private MediaPlayer mediaPlayer;
 
     @Override
-    protected void onCreate(Bundle savedInstanceState) {
-
+    protected void onCreate(Bundle savedInstanceState)
+    {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main_menu);
 
         MyPagerAdapter adapter = new MyPagerAdapter();
+
+        //set up the view pager that allows users to swipe through options
         mPager = (ViewPager) findViewById(R.id.pager);
-
-        Button enter = (Button) findViewById(R.id.enter);
         mPager.setPageTransformer(true, new DepthPageTransformer());
-
         mPager.setAdapter(adapter);
         mPager.setCurrentItem(0);
 
+        //play music
+        mediaPlayer = MediaPlayer.create(this, R.raw.song);
+        mediaPlayer.start();
+        mediaPlayer.setLooping(true);
+
+        //set up enter button
+        Button enter = (Button) findViewById(R.id.enter);
         enter.setOnClickListener(buttonListener);
 
+        //load animation
         Animation shake = AnimationUtils.loadAnimation(this, R.anim.buttonshake);
-
-        enter.startAnimation(shake);
-
+        enter.startAnimation(shake); //start shaking the enter button
     }
 
     private View.OnClickListener buttonListener;
 
     {
-
         buttonListener = new View.OnClickListener() {
-
             @Override
-            public void onClick(View v)
-            {
+            public void onClick(View v) {
                 Button activities = (Button) v;
 
-                switch(v.getId()) {
+                switch (v.getId()) {
                     case R.id.enter:
 
-                        switch(mPager.getCurrentItem())
+                        switch (mPager.getCurrentItem()) //find which view page the app is on
                         {
-                            case 0:
+                            case 0: //open input words
                                 Intent inputwordspage = new Intent(MainMenu.this, InputWords.class);
                                 startActivity(inputwordspage);
                                 break;
-                            case 1:
+
+                            case 1: //open flashcards
                                 Intent flashcardpage = new Intent(MainMenu.this, FlashCards.class);
                                 startActivity(flashcardpage);
                                 break;
-                            case 2:
-                                Intent writing = new Intent(MainMenu.this, Writing.class);
+
+                            case 2: //open writing activity
+                                Intent writing = new Intent(MainMenu.this, MainWritingBoard.class);
                                 startActivity(writing);
                                 break;
 
-                            case 3:
+                            case 3: //open quiz
                                 Intent quizpage = new Intent(MainMenu.this, Quiz.class);
                                 startActivity(quizpage);
                                 break;
                         }
+                        mediaPlayer.stop();
                         break;
                 }
             }
         };
     }
-
 
     @Override
     public void onBackPressed() {
@@ -114,63 +111,6 @@ public class MainMenu extends ActionBarActivity {
             mPager.setCurrentItem(mPager.getCurrentItem() - 1);
         }
     }
-
-}
-
-class MyPagerAdapter extends PagerAdapter
-{
-    public int getCount() {
-        return 4;
-    }
-
-    public Object instantiateItem(ViewGroup container, int position) {
-        LayoutInflater inflater = (LayoutInflater) container.getContext()
-                .getSystemService(Context.LAYOUT_INFLATER_SERVICE);
-
-        // Using different layouts in the view pager instead of images.
-        int resId = -1;
-        View view = null;
-
-        //Getting my layout's in my adapter. Three layouts defined.
-        switch (position) {
-            case 0:
-                resId = R.layout.optionfrag1;
-                view = inflater.inflate(resId, container, false);
-                ((ViewPager) container).addView(view, 0);
-                break;
-
-            case 1:
-                resId = R.layout.optionfrag2;
-                view = inflater.inflate(resId, container, false);
-                ((ViewPager) container).addView(view, 0);
-                break;
-
-            case 2:
-                resId = R.layout.optionfrag4;
-                view = inflater.inflate(resId, container, false);
-                ((ViewPager) container).addView(view, 0);
-                break;
-
-            case 3:
-                resId = R.layout.optionfrag3;
-                view = inflater.inflate(resId, container, false);
-                ((ViewPager) container).addView(view, 0);
-                break;
-        }
-
-        return view;
-    }
-
-    @Override
-    public void destroyItem(ViewGroup container, int position, Object object) {
-        container.removeView((View) object);
-    }
-
-    @Override
-    public boolean isViewFromObject(View view, Object object) {
-        return view == object;
-    }
-
 }
 
 
