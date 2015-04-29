@@ -4,6 +4,7 @@ import android.app.AlertDialog;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.media.MediaPlayer;
 import android.os.Bundle;
 import android.speech.tts.TextToSpeech;
 import android.support.v7.app.ActionBarActivity;
@@ -50,10 +51,14 @@ public class FlashCards extends ActionBarActivity
     //declare the object for speaking
     TextToSpeech ttobj;
 
+    private MediaPlayer mediaPlayer;
+    Intent intent;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.flashcards);
+        intent = new Intent(FlashCards.this, MainMenu.class);
 
         ttobj = new TextToSpeech(getApplicationContext(),
                 new TextToSpeech.OnInitListener()
@@ -93,6 +98,8 @@ public class FlashCards extends ActionBarActivity
         next.startAnimation(button_shake);
         back.startAnimation(button_shake);
 
+        mediaPlayer = MediaPlayer.create(this, R.raw.blop);
+
         //get the words from the file
         insertWords();
 
@@ -111,7 +118,7 @@ public class FlashCards extends ActionBarActivity
                     .setNegativeButton("Return Home", new DialogInterface.OnClickListener() {
                         public void onClick(DialogInterface dialog, int id) {
 
-                            FlashCards.this.finish();
+                            startActivity(intent);
                         }
                     })
                     .setPositiveButton("Go to Settings", new DialogInterface.OnClickListener() {
@@ -173,6 +180,7 @@ public class FlashCards extends ActionBarActivity
 
                 switch (v.getId()) {
                     case R.id.next:
+                            mediaPlayer.start();
                             //skip to the next word
                             question.setText("");
                             question.startAnimation(slide_in);
@@ -182,6 +190,7 @@ public class FlashCards extends ActionBarActivity
                         break;
 
                     case R.id.back:
+                        mediaPlayer.start();
                         //go back one, unless count is <= 1
                         if (count > 1)
                         {
@@ -191,12 +200,11 @@ public class FlashCards extends ActionBarActivity
                             question_play.startAnimation(slide_out);
                             nextQuestion(question);
                         }
-
                         break;
 
                     case R.id.home:
-                        Intent intent = new Intent(FlashCards.this, MainMenu.class);
-                        startActivities(new Intent[]{intent});
+                        mediaPlayer.start();
+                        startActivity(intent);
                         break;
 
                     case R.id.question_playboi: //play button
@@ -301,7 +309,7 @@ public class FlashCards extends ActionBarActivity
                         public void onClick(DialogInterface dialog, int id) {
                             // if this button is clicked, just close
                             // the dialog box and do nothing
-                            FlashCards.this.finish();
+                            startActivity(intent);
                         }
                     });
 

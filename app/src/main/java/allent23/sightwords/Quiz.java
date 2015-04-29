@@ -8,6 +8,7 @@ import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.graphics.Color;
+import android.media.MediaPlayer;
 import android.speech.tts.TextToSpeech;
 import android.support.v4.app.DialogFragment;
 import android.support.v7.app.ActionBarActivity;
@@ -77,10 +78,14 @@ public class Quiz extends ActionBarActivity
     Button option1_play, option2_play, question_play;
     TextToSpeech ttobj;
 
+    MediaPlayer mediaPlayer;
+    Intent intent;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.quizlayout);
+        intent = new Intent(Quiz.this, MainMenu.class);
 
         ttobj = new TextToSpeech(getApplicationContext(),
                 new TextToSpeech.OnInitListener() {
@@ -129,6 +134,8 @@ public class Quiz extends ActionBarActivity
         next.startAnimation(button_shake);
         back.startAnimation(button_shake);
 
+        mediaPlayer = MediaPlayer.create(this, R.raw.blop);
+
         insertWords(); //insert the words if they are there
 
         //initialize arrays
@@ -147,17 +154,15 @@ public class Quiz extends ActionBarActivity
                     .setNegativeButton("Return Home", new DialogInterface.OnClickListener() {
                         public void onClick(DialogInterface dialog, int id) {
 
-                            Quiz.this.finish();
+                            startActivity(intent);
                         }
                     })
                     .setPositiveButton("Go to Settings", new DialogInterface.OnClickListener() {
                         public void onClick(DialogInterface dialog, int id) {
                             // if this button is clicked, just close
                             // the dialog box and do nothing
-
                             Intent inputwords = new Intent(Quiz.this, InputWords.class);
                             startActivity(inputwords);
-                            Quiz.this.finish();
                         }
                     });
 
@@ -211,7 +216,7 @@ public class Quiz extends ActionBarActivity
 
                 switch (v.getId()) {
                     case R.id.next: //if the next is hit
-
+                        mediaPlayer.start();
                         option1.setChecked(false);
                         option2.setChecked(false);
 
@@ -243,7 +248,7 @@ public class Quiz extends ActionBarActivity
                         break;
 
                     case R.id.back: //if the back button is clicked
-
+                        mediaPlayer.start();
                         if (count > 1) //if the question isnt the first one
                         {
                             count = count - 2;
@@ -266,8 +271,8 @@ public class Quiz extends ActionBarActivity
                         break;
 
                     case R.id.home: //if the home is click
-                        Intent intent = new Intent(Quiz.this, MainMenu.class);
-                        startActivities(new Intent[]{intent});
+                        mediaPlayer.start();
+                        startActivity(intent);
                         break;
 
                     case R.id.question_playboi: //if the play button is clicked
@@ -301,6 +306,7 @@ public class Quiz extends ActionBarActivity
 
                 //set booleans for the checks
                 boolean check_1, check_2;
+                mediaPlayer.start();
 
                 // Check which radio button was clicked
                 switch (v.getId()) {
@@ -477,7 +483,7 @@ public class Quiz extends ActionBarActivity
                         public void onClick(DialogInterface dialog, int id) {
                             // if this button is clicked, just close
                             // the dialog box and do nothing
-                            Quiz.this.finish(); //leave
+                            startActivity(intent); //leave
 
                         }
                     });
@@ -487,7 +493,6 @@ public class Quiz extends ActionBarActivity
 
             // show it
             alertDialog.show();
-
         }
     }
 

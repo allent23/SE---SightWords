@@ -8,6 +8,7 @@ import android.app.AlertDialog;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.media.MediaPlayer;
 import android.os.Bundle;
 import android.speech.tts.TextToSpeech;
 import android.support.v7.app.ActionBarActivity;
@@ -87,12 +88,15 @@ public class MainWritingBoard extends ActionBarActivity
     //declare the object for speaking
     TextToSpeech ttobj;
 
+    MediaPlayer mediaPlayer;
+    Intent intent;
 
     @Override
     protected void onCreate(Bundle savedInstanceState)
     {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.boardwriting);
+        intent = new Intent(MainWritingBoard.this, MainMenu.class);
 
         writingBoard = (WritingBoard)findViewById(R.id.drawing);
 
@@ -137,6 +141,8 @@ public class MainWritingBoard extends ActionBarActivity
         next.startAnimation(button_shake);
         back.startAnimation(button_shake);
 
+        mediaPlayer = MediaPlayer.create(this, R.raw.blop);
+
         //get the words from the file
         insertWords();
 
@@ -158,7 +164,7 @@ public class MainWritingBoard extends ActionBarActivity
                     .setNegativeButton("Return Home", new DialogInterface.OnClickListener() {
                         public void onClick(DialogInterface dialog, int id) {
 
-                            MainWritingBoard.this.finish();
+                            startActivity(intent);
                         }
                     })
                     .setPositiveButton("Go to Settings", new DialogInterface.OnClickListener() {
@@ -168,7 +174,6 @@ public class MainWritingBoard extends ActionBarActivity
 
                             Intent inputwords = new Intent(MainWritingBoard.this, InputWords.class);
                             startActivity(inputwords);
-                            MainWritingBoard.this.finish();
                         }
                     });
 
@@ -221,6 +226,7 @@ public class MainWritingBoard extends ActionBarActivity
 
                 switch (v.getId()) {
                     case R.id.next: //skip to the next word
+                        mediaPlayer.start();
 
                         alertDialogBuilder.setTitle("Parent Confirmation");
 
@@ -257,6 +263,7 @@ public class MainWritingBoard extends ActionBarActivity
                         break;
 
                     case R.id.back:
+                        mediaPlayer.start();
                         //go back one, unless count is <= 1
                         if (count > 1)
                         {
@@ -271,8 +278,8 @@ public class MainWritingBoard extends ActionBarActivity
                         break;
 
                     case R.id.home:
-                        Intent intent = new Intent(MainWritingBoard.this, MainMenu.class);
-                        startActivities(new Intent[]{intent});
+                        mediaPlayer.start();
+                        startActivity(intent);
                         break;
 
                     case R.id.question_playboi: //play button
@@ -280,6 +287,7 @@ public class MainWritingBoard extends ActionBarActivity
                         break;
 
                     case R.id.clear: //clear button
+                        mediaPlayer.start();
                         writingBoard.startNew();
                         break;
                 }
@@ -328,7 +336,7 @@ public class MainWritingBoard extends ActionBarActivity
                         public void onClick(DialogInterface dialog, int id) {
                             // if this button is clicked, just close
                             // the dialog box and do nothing
-                            MainWritingBoard.this.finish();
+                            startActivity(intent);
                         }
                     });
 

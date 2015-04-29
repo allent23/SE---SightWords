@@ -3,6 +3,7 @@ package allent23.sightwords;
 import android.app.AlertDialog;
 import android.content.Context;
 import android.content.DialogInterface;
+import android.content.Intent;
 import android.graphics.Color;
 import android.os.Bundle;
 import android.support.v7.app.ActionBarActivity;
@@ -57,11 +58,13 @@ public class InputWords extends ActionBarActivity {
 
     ScrollView scrollView;
     Button back, apply, delete, add;
+    Intent intent;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.inputwords);
+        intent = new Intent(InputWords.this, MainMenu.class);
 
         //set all the buttons used
         back = (Button) findViewById(R.id.home);
@@ -116,7 +119,7 @@ public class InputWords extends ActionBarActivity {
                 switch (v.getId())
                 {
                     case R.id.home: //pressing the home button
-                        InputWords.this.finish();
+                        startActivity(intent);
                         break;
 
                     case R.id.applywords: //pressing the apply button
@@ -244,16 +247,11 @@ public class InputWords extends ActionBarActivity {
                         break;
 
                     case R.id.add: //clicking on the add button
-
                         addEditText(layout); //call function to add a new field
-
                         filter(); //place a filter on the new field
-
                         //display the message
                         Toast.makeText(getApplicationContext(), "New field added!\nPlease enter a word", Toast.LENGTH_SHORT).show();
-
                         scrollView.fullScroll(View.FOCUS_DOWN); //scroll down
-
                         break;
                 }
             }
